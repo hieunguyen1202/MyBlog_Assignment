@@ -1,0 +1,141 @@
+﻿@model IEnumerable<MyBlog.Post>
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="slim-pageheader">
+    <ol class="breadcrumb slim-breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-area="Admin" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a href="Manage" style="padding:4px;background-color:lightgrey;border-radius:4px">QUẢN LÝ BÀI VIẾT</a></li>
+    </ol>
+    <h4 class="slim-pagetitle">QUẢN LÝ BÀI VIẾT</h4>
+</div><!-- slim-pageheader -->
+
+
+<div class="slim-pageheader">
+    <div class="col-md-3">
+        <form action="#" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" id="txtSearch" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-3 text-right">
+        <button type="button" class="btn btn-success"><a style="color:white" asp-action="Create">Create New</a></button>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Content
+            </th>
+            <th>Category Name</th>
+            <th>Public</th>
+            <th>Create Time</th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PostId</td>
+                    <td style="max-width: 200px;max-height:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Title</td>
+                    <td style="max-width: 500px;max-height:500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Contents</td>
+                    <td>@(item.Cat != null ? item.Cat.CatName : "")</td>
+                    <td><input type="checkbox" @(item.Published ? "checked" : "") disabled /></td>
+                    <td>@item.CreateTime</td>
+                    <td>
+                        <button class="btn btn-warning" title="View"><a style="color:white" href="View?postId=@item.PostId"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
+                        <button title="Edit" class="btn btn-primary">
+                            <a style="color:white" href="/Admin/Update/@item.PostId">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                        </button>
+                        <button title="Delete" class="btn btn-danger" onclick="deletePost(@item.PostId)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+    <script type="text/javascript">
+        function deletePost(postId) {
+            swal({
+                title: "Are you sure?",
+                text: "Are you sure that you want to delete this post?",
+                icon: "warning", // Changed 'type' to 'icon' for newer versions of sweetalert
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes, delete it",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: false,
+                    }
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "/Admin/Delete",
+                        data: { id: postId },
+                        type: "POST"
+                    })
+                        .done(function (data) {
+                            swal("Deleted!", "Your post was successfully deleted!", "success")
+                                .then(() => {
+                                    window.location.reload(); // Optional: Refresh the page after deleting the post
+                                });
+                        })
+                        .fail(function (error) {
+                            swal("Oops!", "An error occurred while deleting the post: " + error.responseText, "error");
+                        });
+                } else {
+                    swal("Cancelled", "Your post is safe", "info");
+                }
+            });
+        }
+    </script>
+</table>
+<nav style="margin-left:75%">
+    <ul class="pagination justify-content-center">
+        <li>
+            <a class="pagination-link text-blue" href="#">Previous</a>
+        </li>
+        <li><a href="#" class="pagination-link text-blue">1</a></li>
+        <li><a href="#" class="pagination-link text-blue">2</a></li>
+        <li><a href="#" class="pagination-link text-blue">3</a></li>
+        <li>
+            <a class="pagination-link text-blue" href="#">Next</a>
+
+        </li>
+    </ul>
+</nav>
+

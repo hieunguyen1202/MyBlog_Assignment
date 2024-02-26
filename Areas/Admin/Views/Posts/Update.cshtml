@@ -1,0 +1,131 @@
+﻿@model MyBlog.Post
+
+
+<div class="slim-pageheader">
+    <ol class="breadcrumb slim-breadcrumb">
+        <li class="breadcrumb-item"><a href="/Admin/Home">TRANG CHỦ</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Manage">QUẢN LÝ BÀI VIẾT</a></li>
+
+        <li class="breadcrumb-item"><a href="/Admin/Update" style="padding:4px;background-color:lightgrey;border-radius:4px">CHỈNH SỬA BÀI VIẾT</a></li>
+
+    </ol>
+    <h4 class="slim-pagetitle">CHỈNH SỬA BÀI VIẾT</h4>
+</div><!-- slim-pageheader -->
+<hr />
+<div class="row" style="margin:0 10%">
+    <form onsubmit="event.preventDefault(); updatePost();">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="PostId" />
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thumb" class="control-label"></label>
+                <input asp-for="Thumb" class="form-control" />
+                <span asp-validation-for="Thumb" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsHot" /> @Html.DisplayNameFor(model => model.IsHot)
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNewFeed" /> @Html.DisplayNameFor(model => model.IsNewFeed)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CatId" class="control-label">Danh mục:</label>
+                <select asp-for="CatId" class="form-control">
+                    <option value="">Danh mục</option>
+                    @* <option value="@category.Value">@category.Text</option> *@
+                </select>
+                <span asp-validation-for="CatId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scontent" class="control-label"></label>
+                <textarea rows="2" asp-for="Scontent" class="form-control"></textarea>
+                <span asp-validation-for="Scontent" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12 form-group">
+            <div class="form-group">
+                <label asp-for="Contents" class="control-label"></label>
+                <textarea rows="5" asp-for="Contents" class="form-control"></textarea>
+                <span asp-validation-for="Contents" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div id="messageContainer"></div>
+        </div>
+        <div class="col-md-12 form-group">
+            <input type="submit" value="Save" class="btn btn-primary"  />
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    function updatePost() {
+        var postData = {
+            PostId: $("#PostId").val(),
+            Title: $("#Title").val(),
+            Contents: $("#Contents").val(),
+            Thumb: $("#Thumb").val(),
+            IsHot: $("#IsHot").is(":checked"),
+            Published: $("#Published").is(":checked"),
+            IsNewFeed: $("#IsNewFeed").is(":checked"),
+            Author: $("#Author").val(),
+            AccountId: $("#AccountId").val(),
+            Tags: $("#Tags").val(),
+            CatId: $("#CatId").val()
+        };
+
+        $.ajax({
+            url: "/Admin/Update/" + postData.PostId,
+            data: postData,
+            type: "POST"
+        })
+            .done(function (data) {
+                var successMessage = "Your post was successfully updated";
+                displayMessage(successMessage, false);
+            })
+            .fail(function () {
+                var errorMessage = "An error occurred while updating the post";
+                displayMessage(errorMessage, true);
+            });
+    }
+
+    function displayMessage(message, isError) {
+        var messageElement = document.createElement("div");
+        messageElement.className = isError ? "alert alert-danger" : "alert alert-success";
+        messageElement.textContent = message;
+
+        var container = document.getElementById("messageContainer");
+        container.innerHTML = "";
+        container.appendChild(messageElement);
+    }
+</script>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

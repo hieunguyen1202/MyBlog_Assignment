@@ -1,0 +1,120 @@
+﻿@model MyBlog.Models.Account
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+
+    <!-- Link to Bootstrap v4.3.1 CSS hosted online -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Link to Popper.js and Bootstrap v4.3.1 JS hosted online -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Your custom CSS and other resources -->
+    <!--        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style="background-color: #F8F9FD">
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <h2 class="heading-section" style="margin-top: 10%; font-weight: bold">Welcome back !</h2>
+                    <h5 class="heading-section" style="font-weight: lighter">Please enter your login details</h5>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5" style="background-color: #FFFF; border-radius: 5%">
+                    <div class="wrap">
+                        <div class="img" style="background-image: url(~/adminassets/img/26115.jpg);"></div>
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4 text-center"><img src="~/adminassets/img/26115.jpg" alt="alt" style="width: 70px;height: 7s0px" /></h3>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4 text-center">Log in</h3>
+                                </div>
+                            </div>
+                            <form onsubmit="event.preventDefault(); login();" class="signin-form">
+                                <div class="form-group mt-3">
+                                    <label class="form-control-placeholder" asp-for="Email">Email</label>
+                                    <input type="text" class="form-control" asp-for="Email" required>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-placeholder" asp-for="Password">Password</label>
+                                    <input type="password" class="form-control" asp-for="Password" required>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="messageContainer"></div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Log in</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript">
+    function login() {
+        var loginData = {
+            email: $("#Email").val(),
+            password: $("#Password").val()
+        };
+
+        $.ajax({
+            url: "/Admin/dang-nhap.html",
+            data: loginData,
+            type: "POST",
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = "/Admin/Manage";
+                } else {
+                    displayMessage(response.message, true);
+                }
+            }
+            // error: function () {
+            //     var errorMessage = "Login Failed: Email or Password is Invalid";
+            //     displayMessage(errorMessage, true);
+            // }
+        });
+    }
+
+    function displayMessage(message, isError) {
+        var messageElement = document.createElement("div");
+        messageElement.className = isError ? "alert alert-danger" : "alert alert-success";
+        messageElement.textContent = message;
+
+        var container = document.getElementById("messageContainer");
+        container.innerHTML = "";
+        container.appendChild(messageElement);
+    }
+</script>
+<!-- jQuery 2.0.2 -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="~/adminassets/js/jquery.min.js" type="text/javascript"></script>
+
+<!-- jQuery UI 1.10.3 -->
+<script src="~/adminassets/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
+
+</html>
+
+

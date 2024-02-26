@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MyBlog.Helpers
@@ -60,6 +61,35 @@ namespace MyBlog.Helpers
             }
 
             return sb.ToString();
+        }
+
+        public static string SEOUr1(string url)
+        {
+            url = url.ToLower();
+            url = Regex.Replace(url, @"[áàảãạâấầẩẫậăắằẳẵặ]", "a");
+            url = Regex.Replace(url, @"[éèẻẽẹêếềểễệ]", "e");
+            url = Regex.Replace(url, @"[óòỏõọôốồổỗộơớờởỡợ]", "o");
+            url = Regex.Replace(url, @"[íìỉĩị]", "i");
+            url = Regex.Replace(url, @"[ýỳỷỹỵ]", "y");
+            url = Regex.Replace(url, @"[úùủũụưứừửữự]", "u");
+            url = Regex.Replace(url, @"[đ]", "d");
+            url = Regex.Replace(url.Trim(), @"[^0-9a-z-\s]", "").Trim();
+            url = Regex.Replace(url.Trim(), @"\s+", "-");
+            url = Regex.Replace(url, @"\s", "-");
+
+            while (true)
+            {
+                if (url.IndexOf("--") != -1)
+                {
+                    url = url.Replace("--", "-");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return url;
         }
     }
 }

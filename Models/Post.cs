@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MyBlog.Models;
 
 #nullable disable
 
@@ -10,7 +11,7 @@ namespace MyBlog
         public int PostId { get; set; }
         public string Title { get; set; }
         public string Contents { get; set; }
-        public string Thumb { get; set; }
+        public byte[] Thumb { get; set; }
         public bool Published { get; set; }
         public DateTime? CreateTime { get; set; }
         public string Author { get; set; }
@@ -23,5 +24,6 @@ namespace MyBlog
 
         public virtual Account Account { get; set; }
         public virtual Category Cat { get; set; }
+
     }
 }

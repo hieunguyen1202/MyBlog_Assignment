@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MyBlog
+namespace MyBlog.Models
 {
     public partial class Account
     {

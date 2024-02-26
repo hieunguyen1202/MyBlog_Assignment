@@ -1,0 +1,113 @@
+﻿@model MyBlog.Category
+
+@{
+    ViewData["Title"] = "Create Category";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="slim-pageheader">
+    <ol class="breadcrumb slim-breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">TRANG CHỦ</a></li>
+        <li class="breadcrumb-item"><a href="/Admin/Categories/Manage">QUẢN LÝ DANH MỤC</a></li>
+        <li class="breadcrumb-item"><a href="Manage" style="padding:4px;background-color:lightgrey;border-radius:4px">TẠO MỚI DANH MỤC</a></li>
+
+    </ol>
+    <h4 class="slim-pagetitle">TẠO MỚI DANH MỤC</h4>
+</div><!-- slim-pageheader -->
+
+<hr />
+<div class="row" style="margin:0 10%">
+    <div class="row">
+        <div class="col-md-10">
+            <form onsubmit="event.preventDefault(); addCat();">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CatName" class="control-label"></label>
+                    <input asp-for="CatName" class="form-control" />
+                    <span asp-validation-for="CatName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Thumb" class="control-label"></label>
+                    <input asp-for="Thumb" class="form-control" />
+                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Ordering" class="control-label"></label>
+                    <input asp-for="Ordering" class="form-control" />
+                    <span asp-validation-for="Ordering" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Parents" class="control-label"></label>
+                    <input asp-for="Parents" class="form-control" />
+                    <span asp-validation-for="Parents" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Levels" class="control-label"></label>
+                    <input asp-for="Levels" class="form-control" />
+                    <span asp-validation-for="Levels" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Icon" class="control-label"></label>
+                    <input asp-for="Icon" class="form-control" />
+                    <span asp-validation-for="Icon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cover" class="control-label"></label>
+                    <input asp-for="Cover" class="form-control" />
+                    <span asp-validation-for="Cover" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script type="text/javascript">
+    function addCat() {
+        var catData = {
+            CatName: $("#CatName").val(),
+            Title: $("#Title").val(),
+            Thumb: $("#Thumb").val(),
+            Published: $("#Published").is(":checked"),
+            Ordering: $("#Ordering").val(),
+            Parents: $("#Parents").val(),
+            Levels: $("#Levels").val(),
+            Cover: $("#Cover").val(),
+            Icon: $("#Icon").val(),
+            Description: $("#Description").val()
+        };
+
+        $.ajax({
+            url: "/Admin/Categories/Create",
+            data: catData,
+            type: "POST"
+        })
+            .done(function (data) {
+                swal("Added!", "Your post was successfully added", "success").then(function () {
+                    window.location.href = "/Admin/Categories/Manage";
+                });
+            })
+            .fail(function () {
+                swal("Oops!", "An error occurred while adding the post ", "error");
+            });
+    }
+</script>

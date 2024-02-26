@@ -1,0 +1,109 @@
+﻿@model MyBlog.Post
+
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="slim-pageheader">
+    <ol class="breadcrumb slim-breadcrumb">
+        <li class="breadcrumb-item"><a href="/Admin/Home">TRANG CHỦ</a></li>
+        <li class="breadcrumb-item"><a href="Manage">QUẢN LÝ BÀI VIẾT</a></li>
+        <li class="breadcrumb-item"><a href="" style="padding:4px;background-color:lightgrey;border-radius:4px">TẠO MỚI BÀI VIẾT</a></li>
+
+    </ol>
+    <h4 class="slim-pagetitle">TẠO MỚI BÀI VIẾT</h4>
+</div><!-- slim-pageheader -->
+<hr />
+<form onsubmit="event.preventDefault(); addPost();" enctype="multipart/form-data">
+    <div class="row" style="margin:0 10%">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Tiêu đề:</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scontent" class="control-label">Mô tả ngắn:</label>
+                <input asp-for="Scontent" class="form-control" />
+                <span asp-validation-for="Scontent" class="text-danger"></span>
+            </div>
+    <div class="form-group">
+    <label asp-for="Thumb" class="control-label">Ảnh đại diện:</label>
+<input type="file" asp-for="Thumb" name="thumbFile" class="form-control" />
+    <span asp-validation-for="Thumb" class="text-danger"></span>
+</div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsHot" /> @Html.DisplayNameFor(model => model.IsHot)
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNewFeed" /> @Html.DisplayNameFor(model => model.IsNewFeed)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Author" class="control-label">Tác giả</label>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>  <div class="form-group">
+                <label asp-for="CatId" class="control-label">Danh mục:</label>
+                <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatId"></select>
+            </div>
+
+
+        </div>
+        <div class="col-md-12 form-group">
+             <div class="form-group">
+                <label asp-for="Contents" class="control-label">Nội dung:</label>
+                <textarea rows="5" asp-for="Contents" class="form-control"></textarea>
+                <span asp-validation-for="Contents" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12 form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script type="text/javascript">
+    function addPost() {
+        var postData = {
+            Title: $("#Title").val(),
+            Contents: $("#Contents").val(),
+            Thumb: $("#Thumb").val(),
+            IsHot: $("#IsHot").is(":checked"),
+            Published: $("#Published").is(":checked"),
+            IsNewFeed: $("#IsNewFeed").is(":checked"),
+            Author: $("#Author").val(),
+            AccountId: $("#AccountId").val(),
+            Tags: $("#Tags").val(),
+            CatId: $("#CatId").val()
+        };
+
+        $.ajax({
+            url: "/Admin/Create",
+            data: postData,
+            type: "POST"
+        })
+            .done(function (data) {
+                swal("Added!", "Your post was successfully added", "success").then(function () {
+                    window.location.href = "/Admin/Manage";
+                });
+            })
+            .fail(function () {
+                swal("Oops!", "An error occurred while adding the post ", "error");
+            });
+    }
+</script>

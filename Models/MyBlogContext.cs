@@ -1,7 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols;
+using MyBlog.Models;
+using System.Configuration;
+using System.Data.SqlClient;
 #nullable disable
 
 namespace MyBlog
@@ -21,13 +25,6 @@ namespace MyBlog
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:MyBlog");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

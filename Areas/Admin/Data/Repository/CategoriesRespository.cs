@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyBlog.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyBlog.Areas.Admin.Data.Repository
 {
@@ -28,15 +30,10 @@ namespace MyBlog.Areas.Admin.Data.Repository
                 }
             }
         }
-
-
-    
-
-    public IEnumerable<Category> GetCatList()
+        public IQueryable<Category> GetCatList()
         {
-            return _context.Categories.ToList();
+            return _context.Categories.AsQueryable();
         }
-   
         public void InsertCat(Category cat)
         {
             _context.Categories.Add(cat);

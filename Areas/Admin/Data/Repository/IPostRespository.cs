@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using MyBlog.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyBlog.Areas.Admin.Data.Repository
 {
     public interface IPostRespository
     {
-        IEnumerable<Post> GetPostsList();
+        IQueryable<Post> GetPostsList();
         void InsertPost(Post post);
         //void UpdatePost(Post post);
         void DeletePost(int id);

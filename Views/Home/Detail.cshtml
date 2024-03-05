@@ -2,7 +2,7 @@
 	ViewData["Title"] = "Home Page";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model MyBlog.Models.Comment;
 <link href="~/css/style.css" rel="stylesheet" />
 
 <div class="main-content">
@@ -14,157 +14,274 @@
 						<h1>LAUNCH INTO SUCCESS</h1>
 						<span class="type-meta"><i class="fa fa-user"></i> Jonathan Doe</span>
 						<span class="type-meta"><i class="fa fa-tag"></i> <a href="#">crowdfunding</a>, <a href="#">launch</a> </span>
+						<span class="type-meta"><i class="fa fa-regular fa-clock"></i> 2 days</span>
 						<!--img src="assets/img/image-heartbeat.jpg" class="img-responsive" alt="launch HTML5 Crowdfunding"-->
-						<div class="video-frame">
-							<iframe src="https://player.vimeo.com/video/67938315" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+						<div>
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" style="margin-left:15%" width="70%" height=350px" alt="thumb">
 						</div>
-						<p>Launch will enable you be in run  your own crowdfunding campaign, and be in complete control from concept to crowdfunding to launch.</p>
-						<h2>$10,350</h2>
-						<span class="contribution">raised by <strong>5,234</strong> ready to launch</span>
-						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-								<span class="sr-only">45% Complete</span>
-							</div>
-						</div>
-						<span class="goal-progress"><strong>45%</strong> of $23,000 raised</span>
-					</div>
-					<span class="count-down"><strong>27</strong>Days to go.</span>
-					<a href="#" class="btn btn-launch">HELP LAUNCH</a>
-				</div>
-				<!--signup-->
-				<div class="section-block signup">
-					<div class="sign-up-form">
-						<form>
-							<p>Sign up now for updates and a chance to win a free version of launch!</p>
-							<input class="signup-input" type="text" name="email" placeholder="Email Address"><button class="btn btn-signup" type="submit"><i class="fa fa-paper-plane"></i></button>
-						</form>
+						<p>Launch will enable you be in run  your own crowdfunding campaign, and be in complete control from concept to crowdfunding to launch.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
+						</p>
+						
 					</div>
 				</div>
-				<!--/signup-->
-				<!--tabs-->
-				<div class="section-block">
-					<div class="section-tabs">
-						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
-							<li role="presentation"><a href="#updates" aria-controls="updates" role="tab" data-toggle="tab">Updates</a></li>
-						</ul>
-					</div>
+				<!--comment-->
+
+<section class="my-4">
+  <div class="content col-md-12 col-sm-12 col-xs-12 text-dark">
+    <div class="row d-flex justify-content-center">
+      <div>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-start w-100">
+              <img class="profile-image me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65" height="65" />
+              <div class="w-100">
+                <div class="d-flex" >
+				<h5>Add a comment</h5>								         
+                <ul class="rating mb-3 d-flex" style="list-style:none" data-mdb-toggle="rating">
+                  <li>
+                    <i class="far fa-star fa-sm text-danger" title="Bad"></i>
+                  </li>
+                  <li>
+                    <i class="far fa-star fa-sm text-danger" title="Poor"></i>
+                  </li>
+                  <li>
+                    <i class="far fa-star fa-sm text-danger" title="OK"></i>
+                  </li>
+                  <li>
+                    <i class="far fa-star fa-sm text-danger" title="Good"></i>
+                  </li>
+                  <li>
+                    <i class="far fa-star fa-sm text-danger" title="Excellent"></i>
+                  </li>
+                </ul>	
 				</div>
-				<!--/tabs-->
-				<!--tab panes-->
-				<div class="section-block">
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active" id="about">
-							<div class="about-information">
-								<h1 class="section-title">ABOUT LAUNCH</h1>
-								<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-								<p>Quisque fermentum blandit ex at commodo. Nulla facilisi. Pellentesque porttitor nisi tellus, at gravida mi interdum et. Nulla vestibulum imperdiet libero eget mattis. Vestibulum porttitor, nibh quis sagittis tincidunt, velit orci molestie magna, in congue tortor mauris sit amet eros. Nam dictum gravida tempus.</p>
-							</div>
-						</div>
-						<div role="tabpanel" class="tab-pane" id="updates">
-							<div class="update-information">
-								<h1 class="section-title">UPDATES</h1>
-								<!--update items-->
-								<div class="update-post">
-									<h4 class="update-title">We've started shipping!</h4>
-									<span class="update-date">Posted 2 days ago</span>
-									<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-								</div>
-								<div class="update-post">
-									<h4 class="update-title">Launch begins manufacturing </h4>
-									<span class="update-date">Posted 9 days ago</span>
-									<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-								</div>
-								<div class="update-post">
-									<h4 class="update-title">Designs have now been finalized</h4>
-									<span class="update-date">Posted 17 days ago</span>
-									<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-								</div>
-								<!--/update items-->
-							</div>
-						</div>
-					</div>
-				</div>
+                                                <form asp-controller="Comment" asp-action="Create" method="post">
+                                                    <input type="hidden" asp-for="PostId" />
+                                                    <div class="form-group" data-mdb-input-init>
+                                                        <label class="form-label" for="Email">Email input</label>
+
+                                                        <input type="email" id="Email" name="Email" class="form-control" asp-for="Email" />
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="Content">What is your view?</label>
+
+                                                        <textarea class="form-control" id="Content" rows="2" asp-for="Content"></textarea>
+                                                        <div class="text-danger">@ViewBag.ErrorMessage</div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between mt-3">
+                                                        <button type="button" class="btn btn-success" id="clearButton">Clear</button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Comment<i class="fas fa-long-arrow-alt-right ms-1"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+				<!--/ list comment-->
+<section style="background-color: #FFF; overflow-y: scroll; height: 400px;">
+  <div class="container card">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10">
+        <div class="card text-dark">
+          <div class="card-body p-4">
+            <h4 class="mb-0">Recent comments</h4>
+            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 07, 2021
+                  </p>
+                </div>
+                <p class="mb-0">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting
+                  industry. Lorem Ipsum has been the industry's standard dummy text ever
+                  since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Lara Stewart</h6>
+                                               <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 07, 2021
+                  </p>
+                </div>
+                <p class="mb-0">
+                  Contrary to popular belief, Lorem Ipsum is not simply random text. It
+                  has roots in a piece of classical Latin literature from 45 BC, making it
+                  over 2000 years old. Richard McClintock, a Latin professor at
+                  Hampden-Sydney College in Virginia, looked up one of the more obscure
+                  Latin words, consectetur, from a Lorem Ipsum passage, and going through
+                  the cites.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" style="height: 1px;" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Alexa Bennett</h6>
+                                            <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 07, 2021
+                  </p>
+                </div>
+                <p class="mb-0">
+                  There are many variations of passages of Lorem Ipsum available, but the
+                  majority have suffered alteration in some form, by injected humour, or
+                  randomised words which don't look even slightly believable. If you are
+                  going to use a passage of Lorem Ipsum, you need to be sure.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(24).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Betty Walker</h6>
+                               <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 07, 2021
+                  </p>
+                </div>
+                <p class="mb-0">
+                  It uses a dictionary of over 200 Latin words, combined with a handful of
+                  model sentence structures, to generate Lorem Ipsum which looks
+                  reasonable. The generated Lorem Ipsum is therefore always free from
+                  repetition, injected humour, or non-characteristic words etc.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+				<!--/comment-->
 			</div>
+
 			<!--/tabs-->
 			<!--/main content-->
 			<!--sidebar-->
 			<div class="content col-md-4 col-sm-12 col-xs-12">
 				<div class="section-block summary">
-					<h1 class="section-title">LAUNCH</h1>
-					<div class="profile-contents">
-						<h2 class="position">Sky Rocketing Your Funding Campaign</h2>
-						<img src="assets/img/profile-img.jpg" class="profile-image img responsive" alt="John Doe">
-						<!--social links-->
-						<ul class="list-inline">
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-							<li><a href="#"><i class="fa fa-git"></i></a></li>
-						</ul>
-						<!--/social links-->
-						<a href="#" class="btn btn-contact"><i class="fa fa-envelope"></i>CONTACT US</a>
-					</div>
-				</div>
-				<div class="section-block">
-					<h1 class="section-title">REWARDS</h1>
+					<h1 class="section-title">RECENT POST</h1>
 					<!--reward blocks-->
-					<div class="reward-block">
-						<h3>$10</h3>
-						<h2>Early Bird</h2>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.</p>
-						<span><i class="fa fa-users"></i> 180 backers</span>
-						<a href="" class="btn btn-reward">GET THIS REWARD</a>
+					<a href="">
+					<div class="reward-block d-flex">
+						<div>
+							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+						</div>
+						<div>
+							<h5>Early Bird</h5>
+						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
+						</div>			
 					</div>
-					<div class="reward-block popular">
-						<h3>$20</h3>
-						<h2>Value Bird</h2>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.</p>
-						<span><i class="fa fa-users"></i> 320 backers</span>
-						<a href="" class="btn btn-reward">GET THIS REWARD</a>
 					</div>
-					<div class="reward-block">
-						<h3>$30</h3>
-						<h2>Super Bird</h2>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.</p>
-						<span><i class="fa fa-users"></i> 105 backers</span>
-						<a href="" class="btn btn-reward">GET THIS REWARD</a>
+				<div class="section-block">
+					<h1 class="section-title">NEW FEED</h1>
+					<!--reward blocks-->
+					<a href="">
+					<div class="reward-block d-flex">
+						<div>
+							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+						</div>
+						<div>
+							<h5>Early Bird</h5>
+						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
+						</div>			
 					</div>
-					<div class="reward-block last">
-						<h3>$50</h3>
-						<h2>Premium Bird</h2>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.</p>
-						<span><i class="fa fa-users"></i> 64 backers</span>
-						<a href="" class="btn btn-reward">GET THIS REWARD</a>
+						</a>
+										
+						<a href="">
+							<div class="reward-block d-flex">
+						<div>
+							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+						</div>
+						<div>
+							<h5>Early Bird</h5>
+						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
+						</div>			
 					</div>
+						</a>					
+						
+						<a href="">
+							<div class="reward-block d-flex">
+						<div>
+							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+						</div>
+						<div>
+							<h5>Early Bird</h5>
+						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
+						</div>			
+					</div>
+						</a>
 					<!--/reward blocks-->
 				</div>
-				<!--credits-->
-				<div class="section-block">
-					<h1 class="section-title">CREDITS</h1>
-					<!--credits block-->
-					<div class="credit-block sources">
-						<ul class="list-unstyled">
-							<li><a href="http://getbootstrap.com/"><i class="fa fa-external-link"></i>Bootstrap</a></li>
-							<li><a href="http://fortawesome.github.io/Font-Awesome/"><i class="fa fa-external-link"></i>FontAwesome</a></li>
-							<li><a href="https://www.google.com/fonts"><i class="fa fa-external-link"></i>Google Fonts</a></li>
-							<li><a href="http://jquery.com/"><i class="fa fa-external-link"></i>jQuery</a></li>
-							<li><a href="https://vimeo.com/67938315"><i class="fa fa-external-link"></i>Vimeo Video</a></li>
-							<li><a href="http://uifaces.com/"><i class="fa fa-external-link"></i>Glasses Image</a></li>
-						</ul>
+									<div class="section-block">
+						<h5 class="text-dark">Advertisement</h5>
 					</div>
-					<div class="credit-block license">
-						<p>The Launch template was created by <a class="lined" href="http://themes.audaindesigns.com">Audain Designs</a> for use by anyone for <strong>FREE</strong> and is covered uner the <a class="lined" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.</p>
-						<p>As time goes on the template may receive updates, follow us on twitter to get notified when an update is released.</p>
-						<a href="http://twitter.com/audaindesigns" class="btn btn-follow"><i class="fa fa-twitter"></i>FOLLOW US</a>
-						<a href="#" class="btn btn-download"><i class="fa fa-download"></i>DOWNLOAD TEMPLATE</a>
-					</div>
-					<!--/credits block-->
-				</div>
-				<!--/credits-->
 			</div>
 			<!--/sidebar-->
 		</div>
 	</div>
 </div>
+<script>
+  const clearButton = document.getElementById('clearButton');
+  const emailInput = document.querySelector('input[name="email"]');
+  const commentTextArea = document.getElementById('textAreaExample');
+
+  clearButton.addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Clear the form fields
+    emailInput.value = '';
+    commentTextArea.value = '';
+  });
+</script>

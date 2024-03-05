@@ -1,4 +1,4 @@
-﻿@model MyBlog.Post
+﻿@model MyBlog.Models.Post
 
 @{
     ViewData["Title"] = "Admin";
@@ -28,9 +28,9 @@
                 <input asp-for="Scontent" class="form-control" />
                 <span asp-validation-for="Scontent" class="text-danger"></span>
             </div>
-    <div class="form-group">
+<div class="form-group">
     <label asp-for="Thumb" class="control-label">Ảnh đại diện:</label>
-<input type="file" asp-for="Thumb" name="thumbFile" class="form-control" />
+    <input type="file" asp-for="Thumb" name="Thumb" class="form-control" />
     <span asp-validation-for="Thumb" class="text-danger"></span>
 </div>
             <div class="form-group form-check">
@@ -63,7 +63,7 @@
 
         </div>
         <div class="col-md-12 form-group">
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Contents" class="control-label">Nội dung:</label>
                 <textarea rows="5" asp-for="Contents" class="form-control"></textarea>
                 <span asp-validation-for="Contents" class="text-danger"></span>

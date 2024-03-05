@@ -21,12 +21,6 @@ a {
     color: #85AD90;
 }
 
-/*-Header-*/
-.header {
-    background-color: #99DEAB;
-    border-bottom: 5px solid #85AD90;
-    padding: 30px 0px;
-}
 
 .goal-summary {
     padding: 0px 40px;
@@ -240,16 +234,6 @@ a {
     display: block;
 }
 
-.count-down {
-    display: block;
-    color: #A7A7A7;
-    text-align: right;
-    text-transform: uppercase;
-}
-
-    .count-down strong {
-        padding-right: 5px;
-    }
 
 .progress-bar {
     background-color: #99DEAB;
@@ -308,101 +292,11 @@ a {
         color: #A7A7A7;
     }
 
-    .reward-block.popular:after {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        content: "popular";
-        background-color: #2ED9EA;
-        color: #fff;
-        padding: 5px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        font-weight: 700;
-    }
 
-/*-Sign up form-*/
-.sign-up-form {
-    text-align: center;
-}
 
-    .sign-up-form p {
-        font-weight: 700;
-        color: #fff;
-    }
 
-.signup-input {
-    width: 100%;
-    border: 0;
-    padding: 10px;
-    border-radius: 4px;
-    max-width: 400px;
-}
 
-@media (max-width: 767px) {
-    .signup-input {
-        width: 75%;
-        max-width: 100%%;
-    }
-}
 
-@media (max-width: 480px) {
-    .signup-input {
-        width: 100%;
-        max-width: 100%%;
-    }
-
-    .sign-up-form .btn.btn-signup {
-        margin: 10px 0px;
-        width: 100%;
-        display: block;
-    }
-}
-
-/*-Tabs-*/
-.nav-tabs {
-    border: 0;
-}
-
-    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
-        color: #FFF;
-        background-color: #99DEAB;
-        border: 0;
-        border-radius: 4px;
-        font-weight: 700;
-    }
-
-    .nav-tabs > li > a, .nav-tabs > li > a:hover {
-        border: 0;
-        margin-right: 10px;
-        color: #A7A7A7;
-    }
-
-.tab-content .section-title {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #E2E2E2;
-    display: block;
-}
-
-/*-Updates-*/
-.update-post {
-    margin-bottom: 30px;
-    padding: 10px;
-    background-color: #FDFDFD;
-    border-radius: 4px;
-}
-
-    .update-post .update-title {
-        margin: 10px 0px;
-        font-weight: 700;
-    }
-
-    .update-post .update-date {
-        margin: 0px 0px 15px 0px;
-        display: block;
-        color: #A7A7A7;
-        font-size: 12px;
-    }
 
 
 
@@ -422,25 +316,7 @@ a {
         .btn.btn-launch:hover, .btn.btn-launch:focus, .btn.btn-reward, .btn.btn-reward:hover, .btn.btn-reward :focus {
             background-color: #85AD90;
             box-shadow: none;
-        }
-
-    .btn.btn-reward {
-        background-color: #99DEAB;
-        color: #FFF;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 5px 15px;
-    }
-
-    .btn.btn-signup {
-        background-color: #99DEAB;
-        color: #fff;
-        height: 40px;
-        width: 43px;
-        margin-left: 10px;
-        border: 2px solid #fff;
-        text-align: center;
-    }
+        }   
 
     .btn.btn-contact {
         background-color: #85AD90;
@@ -488,31 +364,3 @@ a {
         padding-right: 10px;
     }
 
-/*-Footer-*/
-.footer {
-    background-color: #85AD90;
-    padding: 10px;
-    text-align: center;
-}
-
-.copyright {
-    color: #F7F7F7;
-}
-
-    .copyright a {
-        background: #fff;
-        color: #85AD90;
-        padding: 0px 5px;
-        margin-left: 4px;
-        border-radius: 4px;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 2px;
-    }
-
-/*-Overrides-*/
-.btn, input {
-    outline: none;
-
-{

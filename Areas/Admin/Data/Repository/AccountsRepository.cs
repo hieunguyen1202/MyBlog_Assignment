@@ -15,5 +15,10 @@ namespace MyBlog.Areas.Admin.Data.Repository
         {
            return _context.Accounts.FirstOrDefault(a => a.Email == email);
         }
-    }
+
+		public Account GetAccountById(int id)
+		{
+			return _context.Accounts.FirstOrDefault(a => a.AccountId == id);
+		}
+	}
 }

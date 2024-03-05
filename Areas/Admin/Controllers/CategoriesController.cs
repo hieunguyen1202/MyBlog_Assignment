@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using MyBlog;
 using MyBlog.Areas.Admin.Data.Repository;
+using MyBlog.Models;
+using NuGet.Protocol.Core.Types;
 
 namespace MyBlog.Areas.Admin.Controllers
 {
@@ -24,14 +26,47 @@ namespace MyBlog.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("Manage")]
-        public async Task<IActionResult> Index(IEnumerable<Category> catList)
+        [CustomeAuthen(View = "Index")]
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            if (catList.Count() == 0)
+            IQueryable<Category> cats =  _repository.GetCatList();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
             {
-                catList = _repository.GetCatList();
+                pageNumber = 1;
             }
-            return View(catList);
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                cats = cats.Where(s => (s.Title != null && s.Title.Contains(searchString)) ||
+                                     (s.CatName != null && s.CatName.Contains(searchString)));
+            }
+            if (!cats.Any())
+            {
+                ViewData["Result"] = "No records found.";
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    cats = cats.OrderByDescending(s => s.CatName);
+                    break;
+                default:
+                    cats = cats.OrderBy(s => s.CatId);
+                    break;
+            }
+
+            int pageSize = 5;
+            return View(await PaginatedList<Category>.CreateAsync(cats.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
+
 
         // GET: Admin/Categories/Details/5
         //public async Task<IActionResult> Details(int? id)
@@ -53,6 +88,7 @@ namespace MyBlog.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [CustomeAuthen(View = "Create")]
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
@@ -76,6 +112,7 @@ namespace MyBlog.Areas.Admin.Controllers
         // GET: Admin/Categories/Edit/5
         [HttpGet]
         [Route("Update/{id}")]
+        [CustomeAuthen(View = "Edit")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null)

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyBlog.Areas.Admin.Controllers;
 using MyBlog.Areas.Admin.Data.Repository;
+using MyBlog.Data.Repository;
 using MyBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace MyBlog.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICategoriesRespository _repository;
+        private readonly ICategoriesRepository _repository;
         private readonly IPostRespository _repositoryPost;
-        public HomeController(ICategoriesRespository repository, ILogger<HomeController> logger, IPostRespository repositoryPost)
+        public HomeController(ICategoriesRepository repository, ILogger<HomeController> logger, IPostRespository repositoryPost)
         {
             _repository = repository;
             _repositoryPost = repositoryPost;
@@ -39,21 +40,30 @@ namespace MyBlog.Controllers
             return View(catList);
         }
         [HttpGet]
+        [Route("Detail")]
+        public IActionResult Detail()
+        {
+            return View();
+        }
+			[HttpGet]
         [Route("Detail/{id}")]
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
             var post = _repositoryPost.GetPostById(id);
-			//var catList = _repository.GetCatList();
-			//var viewModel = new IndexViewModel
-			//{
-			//    Categories = catList.ToList(),
-			//    Posts = postList.ToList()
-			//};
-			if (post == null)
-			{
-				return NotFound();
-			}
-			return View(post);
+            //var catList = _repository.GetCatList();
+            //var postList = _repositoryPost.GetPostsList();
+            //var viewModel = new IndexViewModel
+            //{
+            //    Categories = catList.ToList(),
+            //    Posts = postList.ToList()
+            //};
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
         }
         public IActionResult Privacy()
         {

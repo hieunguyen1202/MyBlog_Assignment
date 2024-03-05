@@ -16,7 +16,6 @@ using MyBlog.Models;
 namespace MyBlog.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
     [Route("/Admin")]
     public class AccountsController : Controller
     {

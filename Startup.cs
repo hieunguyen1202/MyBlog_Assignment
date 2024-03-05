@@ -15,28 +15,47 @@ using System.Data.SqlClient;
 using MyBlog.Areas.Admin.Data;
 using MyBlog.Areas.Admin.Data.Repository;
 using MyBlog.Data.Repository;
+using System.Net;
+using Minio;
+using Minio.DataModel;
+using System.Security.Cryptography;
+using MyBlog.Models;
 namespace MyBlog
 {
     public class Startup
     {
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+		private readonly IMinioClient minioClient;
+		public Startup(IConfiguration configuration)
+        {			
+			Configuration = configuration;
+			
+		}
 
         public IConfiguration Configuration { get; }
-        public Startup()
-        {
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json");
+		public Startup()
+		{
 
-            Configuration = builder.Build();
-        }
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+			IConfigurationBuilder builder = new ConfigurationBuilder()
+				.AddJsonFile("appsettings.json");
+
+			Configuration = builder.Build();
+		}
+		public void ConfigureServices(IServiceCollection services)
         {
-            var stringConnectdb = Configuration.GetConnectionString("MyBlogDB");
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+			services.AddSingleton<IMinioClient>(sp =>
+			{
+				var endpoint = "http://14.160.26.45:9080";
+				var accesskey = "p7vAskzx2aQfdE1YAPvy";
+				var secretKey = "FIZMZqfyVRHogz8TSVe4dUd1Ij8C9aCUTVzQsQiU";
+
+				return new MinioClient()
+					.WithEndpoint(endpoint)
+					.WithCredentials(accesskey, secretKey)
+					.WithSSL()
+					.Build();
+			});
+			var stringConnectdb = Configuration.GetConnectionString("MyBlogDB");
             services.AddDbContext<MyBlogContext>(options => options.UseSqlServer(stringConnectdb), ServiceLifetime.Scoped);
             services.AddControllersWithViews();
             services.AddSession();
@@ -68,6 +87,8 @@ namespace MyBlog
             services.AddScoped<ICategoriesRespository, CategoriesRespository>();
             services.AddScoped<IAccountsRepository, AccountsRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IMinioClient, MinioClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

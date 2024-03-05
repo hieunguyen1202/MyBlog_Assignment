@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyBlog.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyBlog.Data.Repository

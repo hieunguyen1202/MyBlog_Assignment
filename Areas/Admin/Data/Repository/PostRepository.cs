@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using Microsoft.EntityFrameworkCore;
+using MyBlog.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,8 +15,6 @@ namespace MyBlog.Areas.Admin.Data.Repository
             _context = context;
         }
 
- 
-
         public Post GetPostById(int id)
         {
             using var context = _context;
@@ -23,16 +22,15 @@ namespace MyBlog.Areas.Admin.Data.Repository
                 .FirstOrDefault(o => o.PostId == id);
         }
 
-        public IEnumerable<Post> GetPostsList()
+        public IQueryable<Post> GetPostsList()
         {
             var posts = _context.Posts
                 .Include(p => p.Cat) // Include the Cat navigation property
                 .OrderBy(x => x.PostId)
-                .ToList();
+                .AsQueryable();
 
             return posts;
         }
-
         public void InsertPost(Post post)
         {
             _context.Posts.Add(post);

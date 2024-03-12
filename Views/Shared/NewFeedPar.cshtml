@@ -1,0 +1,22 @@
+﻿@model IEnumerable<MyBlog.Models.Post>
+<div class="section-block">
+    <h1 class="section-title">NEW FEED</h1>
+    @if (Model != null)
+    {
+        foreach (var post in Model)
+        {
+            <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId">
+                <div class="reward-block d-flex">
+                    <div>
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+                    </div>
+                    <div class="ms-2">
+                        <h6>@post.Title</h6>
+                        <p class="text-truncate" style="max-width: 230px; font-size:15px">@post.Scontent</p>
+                    </div>
+                </div>
+            </a>
+        }
+    }
+</div>
+

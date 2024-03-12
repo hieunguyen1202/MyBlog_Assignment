@@ -1,0 +1,115 @@
+﻿@model IEnumerable<MyBlog.Models.Post>
+
+<div class="latest_post">
+    <h2><span style="background-color:#99DEAB">@ViewBag.ListTitle</span></h2>
+    <div class="latest_post_container">
+        <ul class="latest_postnav">
+            @if (Model != null)
+            {
+                foreach (var post in Model)
+                {
+                    <li>
+                        <div class="media d-flex item">
+                            <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="media-left">
+                                <img alt="" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" @* @post.Thum *@b>
+                            </a>
+                            <div class="media-body ms-2 ">
+                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="catg_title m-0">
+                                    <h6 class="m-0"><span>@post.Title</span></h6>
+                                </a>
+                                <p class="text-truncate" style="max-width: 260px; font-size:15px">@post.Scontent</p>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+<style>
+    .carousel-control {
+        left: 11%;
+        height: 40px;
+        width: 40px;
+        background: none repeat scroll 0 0 #222222;
+        border: 4px solid #FFFFFF;
+        border-radius: 23px 23px 23px 23px;
+        margin-top: 90px;
+    }
+
+        .carousel-control.right {
+            left: 90% !important;
+        }
+
+    .carousel-inner {
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .carousel-control.right {
+        left: 86% !important;
+    }
+    /* The indicators */
+    .carousel-indicators {
+        display: none;
+    }
+    .latest_post_container {
+        display: inline;
+        float: left;
+        height: 430px;
+        position: relative;
+        width: 100%
+    }
+
+        .latest_post_container:hover #prev-button, .latest_post_container:hover #next-button {
+            display: block
+        }
+
+    .latest_post {
+        float: left;
+        display: inline;
+        width: 100%
+    }
+
+        .latest_post > h2 {
+            background: none repeat scroll 0 0 #F7F7F7;
+            color: #fff;
+            font-family: 'Oswald',sans-serif;
+            font-size: 18px;
+            margin-top: 5px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            margin-left: 0;
+            padding: 0;
+            position: relative;
+            text-align: center;
+            text-transform: uppercase
+        }
+
+            .latest_post > h2 span {
+                padding: 4px 10px
+            }
+
+    .latest_postnav {
+        height: auto !important;
+        margin-top: 20px
+    }
+
+        .latest_postnav li {
+            margin-bottom: 10px;
+            float: left;
+            width: 100%
+        }
+
+    .latest_post_container {
+        display: inline;
+        float: left;
+        height: 430px;
+        position: relative;
+        width: 100%
+    }
+
+        .latest_post_container:hover #prev-button, .latest_post_container:hover #next-button {
+            display: block
+        }
+</style>

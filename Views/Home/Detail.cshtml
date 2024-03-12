@@ -1,287 +1,252 @@
 ﻿@{
-	ViewData["Title"] = "Home Page";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Detail Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model MyBlog.Models.Comment;
+@model MyBlog.Models.PostDetailViewModel;
 <link href="~/css/style.css" rel="stylesheet" />
-
 <div class="main-content">
-	<div class="container">
-		<div class="row">
-			<div class="content col-md-8 col-sm-12 col-xs-12">
-				<div class="section-block">
-					<div class="funding-meta">
-						<h1>LAUNCH INTO SUCCESS</h1>
-						<span class="type-meta"><i class="fa fa-user"></i> Jonathan Doe</span>
-						<span class="type-meta"><i class="fa fa-tag"></i> <a href="#">crowdfunding</a>, <a href="#">launch</a> </span>
-						<span class="type-meta"><i class="fa fa-regular fa-clock"></i> 2 days</span>
-						<!--img src="assets/img/image-heartbeat.jpg" class="img-responsive" alt="launch HTML5 Crowdfunding"-->
-						<div>
+    <div class="container">
+        <div class="row">
+            <div class="content col-md-8 col-sm-12 col-xs-12">
+                <div class="section-block">
+                    <div class="funding-meta">
+                        <h1>@Model.Post.Title</h1>
+                        <span class="type-meta"><i class="fa fa-user"></i> @(Model.Post.Author ?? "Admin")</span>
+                        <span class="type-meta"><i class="fa fa-tag"></i> <a href="#">@(Model.Post.Tags ?? "Null")</a> </span>
+                        <span class="type-meta"><i class="fa fa-regular fa-clock"></i>  @string.Format("{0:dd/MM/yyyy}", Model.Post.CreateTime)</span>
+                        <div>
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" style="margin-left:15%" width="70%" height=350px" alt="thumb">
-						</div>
-						<p>Launch will enable you be in run  your own crowdfunding campaign, and be in complete control from concept to crowdfunding to launch.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-							Curabitur accumsan sem sed velit ultrices fermentum. Pellentesque rutrum mi nec ipsum elementum aliquet. Sed id vestibulum eros. Nullam nunc velit, viverra sed consequat ac, pulvinar in metus.
-						</p>
-						
-					</div>
-				</div>
-				<!--comment-->
+                        </div>
+                        <p>
+                            @Model.Post.Contents
+                        </p>
 
-<section class="my-4">
-  <div class="content col-md-12 col-sm-12 col-xs-12 text-dark">
-    <div class="row d-flex justify-content-center">
-      <div>
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex flex-start w-100">
-              <img class="profile-image me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65" height="65" />
-              <div class="w-100">
-                <div class="d-flex" >
-				<h5>Add a comment</h5>								         
-                <ul class="rating mb-3 d-flex" style="list-style:none" data-mdb-toggle="rating">
-                  <li>
-                    <i class="far fa-star fa-sm text-danger" title="Bad"></i>
-                  </li>
-                  <li>
-                    <i class="far fa-star fa-sm text-danger" title="Poor"></i>
-                  </li>
-                  <li>
-                    <i class="far fa-star fa-sm text-danger" title="OK"></i>
-                  </li>
-                  <li>
-                    <i class="far fa-star fa-sm text-danger" title="Good"></i>
-                  </li>
-                  <li>
-                    <i class="far fa-star fa-sm text-danger" title="Excellent"></i>
-                  </li>
-                </ul>	
-				</div>
-                                                <form asp-controller="Comment" asp-action="Create" method="post">
-                                                    <input type="hidden" asp-for="PostId" />
+                    </div>
+                </div>
+                <!--comment-->
+
+                <section class="my-4">
+                    <div class="content col-md-12 col-sm-12 col-xs-12 text-dark">
+                        <div class="row d-flex justify-content-center">
+                            <div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-start w-100">
+                                            <img class="profile-image me-3"
+                                                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65" height="65" />
+                                            <div iv class="w-100">
+                                                <div class="d-flex">
+                                                    <h5>Add a comment</h5>
+                                                    <ul class="rating mb-3 d-flex" style="list-style:none" data-mdb-toggle="rating">
+                                                        <li>
+                                                            <i class="far fa-star fa-sm text-danger" title="Bad"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="far fa-star fa-sm text-danger" title="Poor"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="far fa-star fa-sm text-danger" title="OK"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="far fa-star fa-sm text-danger" title="Good"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="far fa-star fa-sm text-danger" title="Excellent"></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <form onsubmit="event.preventDefault();addComment(this);">
+                                                    <input asp-for="NewComment.PostId" class="form-control" type="hidden" id="PostId" name="PostId" value="@ViewBag.postId" />
                                                     <div class="form-group" data-mdb-input-init>
-                                                        <label class="form-label" for="Email">Email input</label>
-
-                                                        <input type="email" id="Email" name="Email" class="form-control" asp-for="Email" />
+                                                        <label asp-for="NewComment.Email" class="form-label">Email input</label>
+                                                        <input type="email" id="Email" name="Email" class="form-control" asp-for="NewComment.Email" />
+                                                        <span asp-validation-for="NewComment.Email" class="text-danger"></span>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="form-group">
-                                                        <label class="form-label" for="Content">What is your view?</label>
-
-                                                        <textarea class="form-control" id="Content" rows="2" asp-for="Content"></textarea>
-                                                        <div class="text-danger">@ViewBag.ErrorMessage</div>
+                                                        <label class="form-label">What is your view?</label>
+                                                        <textarea asp-for="NewComment.Content" class="form-control" id="Content" rows="2" name="Content"></textarea>
+                                                        <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+                                                        <div class="text-danger">@ViewBag.Error</div>
                                                     </div>
                                                     <div class="d-flex justify-content-between mt-3">
                                                         <button type="button" class="btn btn-success" id="clearButton">Clear</button>
-                                                        <button type="submit" class="btn btn-danger">
+                                                        <button type="submit" class="btn btn-danger" id="commentBtn">
                                                             Comment<i class="fas fa-long-arrow-alt-right ms-1"></i>
                                                         </button>
                                                     </div>
-
                                                 </form>
-                </div>
-              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </section>
+
+                <!--/ list comment-->
+                <section style="background-color: #FFF; overflow-y: scroll; height: 400px;">
+                    <div class="container card">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12 col-lg-10">
+                                <div class="card text-dark">
+                                    <div class="card-body p-4" style="z-index: 1">
+                                        <h4 class="mb-0" style="position: sticky; top: 0; background-color: #FFF; z-index: 1;">Recent comments</h4>
+                                        <p class="fw-light mb-4 pb-2" style="position: sticky; top: 30px; background-color: #FFF; z-index: 1;">Latest Comments section by users</p>
+                            @if (Model != null && Model.CommentList != null && Model.CommentList.Any())
+                            {
+                                @foreach (var comment in Model.CommentList)
+                                {
+                                                <div class="d-flex flex-start">
+                                                    <img class="rounded-circle shadow-1-strong me-3"
+                                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
+                                                         height="60" />
+                                                    <div class="d-flex flex-column">
+                                                        <h6 class="text-dark mb-0">@HideEmail(comment.Email)</h6>
+                                                        <p class="text-black-50 h-25 mb-0">@comment.CreateAt?.ToString("MMMM dd, yyyy")</p>
+                                                        <p class="d-block mb-0">@comment.Content</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                }
+                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!--/comment-->
             </div>
-          </div>
+
+            <!--/tabs-->
+            <!--/main content-->
+            <!--sidebar-->
+            <div class="content col-md-4 col-sm-12 col-xs-12">
+                <!-- Recent post-->  
+                <div id="recent-posts"></div>
+                <!--reward blocks-->
+                <!--/reward blocks-->
+
+                <div id="newfeed-posts"></div>
+                    <div class="section-block">
+                        <h5 class="text-dark">Advertisement</h5>
+                    </div>
+                </div>
+                <!--/sidebar-->
+            </div>
         </div>
-      </div>
     </div>
-</section>
+@section Scripts {
+    <script>
+        $('#recent-posts').load("/home/recent"),
+            $('#newfeed-posts').load("/home/newfeed")
+    </script>
+}
+@functions {
+    string HideEmail(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return string.Empty;
+        }
 
-				<!--/ list comment-->
-<section style="background-color: #FFF; overflow-y: scroll; height: 400px;">
-  <div class="container card">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-12 col-lg-10">
-        <div class="card text-dark">
-          <div class="card-body p-4">
-            <h4 class="mb-0">Recent comments</h4>
-            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+        int startIndex = 5;
+        int lengthToMask = email.Length - 8; // Third-to-last character
+        if (startIndex < email.Length && lengthToMask > 0)
+        {
+            string maskedEmail = email.Substring(0, startIndex) +
+            new string('*', lengthToMask) +
+            email.Substring(email.Length - 3);
+            return maskedEmail;
+        }
 
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Maggie Marsh</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 07, 2021
-                  </p>
-                </div>
-                <p class="mb-0">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting
-                  industry. Lorem Ipsum has been the industry's standard dummy text ever
-                  since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it.
-                </p>
-              </div>
-            </div>
-          </div>
+        return email;
+    }
+    }
 
-          <hr class="my-0" />
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const clearButton = document.getElementById('clearButton');
+            const emailInput = document.querySelector('input[name="Email"]');
+            const commentTextArea = document.getElementById('Content');
+            const commentBtn = document.getElementById('commentBtn');
+            const postIdInput = document.getElementById('PostId');
+            postIdInput.value = '@ViewBag.postId';
+            function checkInputs() {
+                const emailValue = emailInput.value.trim();
+                const commentValue = commentTextArea.value.trim();
 
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Lara Stewart</h6>
-                                               <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 07, 2021
-                  </p>
-                </div>
-                <p class="mb-0">
-                  Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                  has roots in a piece of classical Latin literature from 45 BC, making it
-                  over 2000 years old. Richard McClintock, a Latin professor at
-                  Hampden-Sydney College in Virginia, looked up one of the more obscure
-                  Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                  the cites.
-                </p>
-              </div>
-            </div>
-          </div>
+                if (emailValue !== '' && commentValue !== '') {
+                    commentBtn.removeAttribute('disabled');
+                    clearButton.removeAttribute('disabled');
+                } else if (emailValue !== '' || commentValue !== '') {
+                    commentBtn.setAttribute('disabled', 'disabled');
+                    clearButton.removeAttribute('disabled');
+                } else {
+                    clearButton.setAttribute('disabled', 'disabled');
+                    commentBtn.setAttribute('disabled', 'disabled');
+                }
+            }
 
-          <hr class="my-0" style="height: 1px;" />
+            // Add input event listeners to both email and comment fields
+            emailInput.addEventListener('input', checkInputs);
+            commentTextArea.addEventListener('input', checkInputs);
 
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Alexa Bennett</h6>
-                                            <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 07, 2021
-                  </p>
-                </div>
-                <p class="mb-0">
-                  There are many variations of passages of Lorem Ipsum available, but the
-                  majority have suffered alteration in some form, by injected humour, or
-                  randomised words which don't look even slightly believable. If you are
-                  going to use a passage of Lorem Ipsum, you need to be sure.
-                </p>
-              </div>
-            </div>
-          </div>
+            // Check inputs on form load
+            checkInputs();
 
-          <hr class="my-0" />
+            // Clear button click event
+            clearButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent form submission
 
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(24).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Betty Walker</h6>
-                               <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 07, 2021
-                  </p>
-                </div>
-                <p class="mb-0">
-                  It uses a dictionary of over 200 Latin words, combined with a handful of
-                  model sentence structures, to generate Lorem Ipsum which looks
-                  reasonable. The generated Lorem Ipsum is therefore always free from
-                  repetition, injected humour, or non-characteristic words etc.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-				<!--/comment-->
-			</div>
+                // Clear the form fields
+                emailInput.value = '';
+                commentTextArea.value = '';
 
-			<!--/tabs-->
-			<!--/main content-->
-			<!--sidebar-->
-			<div class="content col-md-4 col-sm-12 col-xs-12">
-				<div class="section-block summary">
-					<h1 class="section-title">RECENT POST</h1>
-					<!--reward blocks-->
-					<a href="">
-					<div class="reward-block d-flex">
-						<div>
-							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
-						</div>
-						<div>
-							<h5>Early Bird</h5>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
-						</div>			
-					</div>
-					</div>
-				<div class="section-block">
-					<h1 class="section-title">NEW FEED</h1>
-					<!--reward blocks-->
-					<a href="">
-					<div class="reward-block d-flex">
-						<div>
-							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
-						</div>
-						<div>
-							<h5>Early Bird</h5>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
-						</div>			
-					</div>
-						</a>
-										
-						<a href="">
-							<div class="reward-block d-flex">
-						<div>
-							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
-						</div>
-						<div>
-							<h5>Early Bird</h5>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
-						</div>			
-					</div>
-						</a>					
-						
-						<a href="">
-							<div class="reward-block d-flex">
-						<div>
-							<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
-						</div>
-						<div>
-							<h5>Early Bird</h5>
-						<p>Curabitur accumsan sem sed velit ultrices fermentum.</p>	
-						</div>			
-					</div>
-						</a>
-					<!--/reward blocks-->
-				</div>
-									<div class="section-block">
-						<h5 class="text-dark">Advertisement</h5>
-					</div>
-			</div>
-			<!--/sidebar-->
-		</div>
-	</div>
-</div>
-<script>
-  const clearButton = document.getElementById('clearButton');
-  const emailInput = document.querySelector('input[name="email"]');
-  const commentTextArea = document.getElementById('textAreaExample');
+                // Disable the comment button after clearing
+                commentBtn.setAttribute('disabled', 'disabled');
+            });
+        });
 
-  clearButton.addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent form submission
+    </script>
+    <script type="text/javascript">
+        function addComment(form) {
+            var commentData = {
+                Email: $("#Email", form).val(),
+                Content: $("#Content", form).val(),
+                PostId: $("#PostId", form).val()
+            };
 
-    // Clear the form fields
-    emailInput.value = '';
-    commentTextArea.value = '';
-  });
-</script>
+            $.ajax({
+                url: "/Create",
+                data: JSON.stringify(commentData),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            })
+                .done(function (data) {
+                    if (data.success) {
+                        swal("Added!", "Your post was successfully added", "success").then(function () {
+                            window.location.href = "/Detail/" + commentData.PostId;
+                        });
+                    } else {
+                        swal("Oops!", data.message, "error");
+                    }
+                })
+                .fail(function () {
+                    swal("Oops!", "An error occurred while adding the post", "error");
+                });
+        }
+    </script>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+

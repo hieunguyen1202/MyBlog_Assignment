@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyBlog.Areas.Admin.Controllers;
@@ -18,53 +19,82 @@ namespace MyBlog.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoriesRepository _repository;
         private readonly IPostRespository _repositoryPost;
-        public HomeController(ICategoriesRepository repository, ILogger<HomeController> logger, IPostRespository repositoryPost)
+        private readonly ICommentRepository _repositoryComment;
+        public HomeController(ICategoriesRepository repository, ILogger<HomeController> logger, IPostRespository repositoryPost, ICommentRepository repositoryComment)
         {
+
             _repository = repository;
             _repositoryPost = repositoryPost;
             _logger = logger;
+            _repositoryComment = repositoryComment;
         }
         [HttpGet]
         [Route("/home", Name ="Home")]
         public IActionResult Index()
         {
-            //var postList = _repositoryPost.GetPostsList();
-            var catList = _repository.GetCatList();
-
+            var postList = _repositoryPost.GetPostsList();
+            ViewBag.catList = _repository.GetCatList();
+            //var catList = _repository.GetCatList();
             //var viewModel = new IndexViewModel
             //{
-            //    Categories = catList.ToList(),
-            //    Posts = postList.ToList()
+            //   Categories = catList.ToList(),
+            //   Posts = postList.ToList()
             //};
-
-            return View(catList);
+            return View();
         }
         [HttpGet]
         [Route("Detail")]
         public IActionResult Detail()
         {
+            ViewBag.catList = _repository.GetCatList();
             return View();
         }
-			[HttpGet]
+        // Controller action
+        [HttpGet]
         [Route("Detail/{id}")]
         public async Task<IActionResult> Detail(int id)
         {
-            var post = _repositoryPost.GetPostById(id);
-            //var catList = _repository.GetCatList();
-            //var postList = _repositoryPost.GetPostsList();
-            //var viewModel = new IndexViewModel
-            //{
-            //    Categories = catList.ToList(),
-            //    Posts = postList.ToList()
-            //};
-
-            if (post == null)
+            ViewBag.catList = _repository.GetCatList();
+            var commentList = _repositoryComment.GetCommentListByPostId(id);
+            var currentPost = _repositoryPost.GetPostById(id);
+            //var recentPost = _repositoryPost.GetRecentPosts(1).FirstOrDefault();
+            if (currentPost == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            ViewBag.postId = id;
+            //ViewBag.RecentPost = recentPost;
+            return View(new PostDetailViewModel
+            {
+                Post = currentPost,
+                CommentList = commentList.ToList(),
+                NewComment = new MyBlog.Models.Comment()
+            });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Create")]
+        public ActionResult Create(Comment comment)
+        {
+            try
+            { 
+                if (ModelState.IsValid)
+                {
+                    comment.CreateAt = DateTime.Now;
+                    comment.Published = true;
+                    _repositoryComment.createComment(comment);
+                }
+                return RedirectToAction("Detail", new { id = comment.PostId });
+            }
+            catch (Exception ex)
+            {
+                // Return a JSON response indicating failure with an error message
+                return Json(new { success = false, message = "An error occurred while posting the comment: " + ex.Message });
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

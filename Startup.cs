@@ -20,6 +20,7 @@ using Minio;
 using Minio.DataModel;
 using System.Security.Cryptography;
 using MyBlog.Models;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace MyBlog
 {
     public class Startup
@@ -57,6 +58,7 @@ namespace MyBlog
 			});
 			var stringConnectdb = Configuration.GetConnectionString("MyBlogDB");
             services.AddDbContext<MyBlogContext>(options => options.UseSqlServer(stringConnectdb), ServiceLifetime.Scoped);
+            services.AddScoped<MyBlogContext>();
             services.AddControllersWithViews();
             services.AddSession();
             //services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRange.All }));

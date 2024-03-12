@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyBlog.Models.Category>
+﻿@model MyBlog.Models.PostDetailViewModel;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +13,9 @@
           rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
 </head>
 <body>
-    <header class="position-sticky" style="z-index:1">
+    <header class="position-sticky" style="top: 0; z-index: 9999; background-color: #FFF;">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
             <!-- Container wrapper -->
@@ -43,13 +42,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
                         </li>
-                        @if (Model != null && Model.Count() > 0)
+                        @if (ViewBag.catList is List<MyBlog.Models.Category> catList)
                         {
-                            foreach (var item in Model)
+                            foreach (var category in catList)
                             {
-                                if (item.Published == true)
+                                if (category.Published == true)
                                 {
-                                    <li class="nav-item"><a class="nav-link" href="#">@item.CatName</a></li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@category.CatName</a>
+                                    </li>
                                 }
                             }
                         }
@@ -64,6 +65,7 @@
             <!-- Container wrapper -->
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -131,13 +133,15 @@
                             </h6>
                             <ul class="menu" style="display: block">
                                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-                                @if (Model != null && Model.Count() > 0)
+                                @if (ViewBag.catList is List<MyBlog.Models.Category> catListFooter)
                                 {
-                                    foreach (var item in Model)
+                                    foreach (var category in catListFooter)
                                     {
-                                        if (item.Published == true)
+                                        if (category.Published == true)
                                         {
-                                            <li><a href="#">@item.CatName</a></li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">@category.CatName</a>
+                                            </li>
                                         }
                                     }
                                 }
@@ -193,6 +197,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

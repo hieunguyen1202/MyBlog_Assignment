@@ -32,17 +32,16 @@ namespace MyBlog.Areas.Admin.Controllers
 
     public class PostsController : Controller
     {
-        private readonly IPostRespository _repository;
-        private readonly ICategoriesRespository _categoriesRepository;
-        private readonly IMinioClient _minioClient;
+   private readonly IPostRespository _repository;
+    private readonly ICategoriesRespository _categoriesRepository;
+    private readonly IMinioClient _minioClient;
 
-        public PostsController(IPostRespository repository, ICategoriesRespository categoriesRepository, IMinioClient minioClient)
-        {
-            _repository = repository;
-            _categoriesRepository = categoriesRepository;
-            _minioClient = minioClient;
-
-		}
+    public PostsController(IPostRespository repository, ICategoriesRespository categoriesRepository, IMinioClient minioClient)
+    {
+        _repository = repository;
+        _categoriesRepository = categoriesRepository;
+        _minioClient = minioClient;
+    }
 
         [HttpGet]
         [Route("Manage")]
@@ -104,9 +103,11 @@ namespace MyBlog.Areas.Admin.Controllers
         }
         [HttpGet]
         [Route("Update")]
-        [CustomeAuthen(View = "Update")]
+        //[CustomeAuthen(View = "Update")]
         public IActionResult Update()
         {
+            ViewData["catList"] = new SelectList(_categoriesRepository.GetCatList(), "CatId", "CatName");
+
             return View();
         }
 
@@ -195,12 +196,14 @@ namespace MyBlog.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("Update/{id}")] 
+        [Route("Update/{id}")]
         //[CustomeAuthen(View = "Edit")]
-        public IActionResult Edit(int id)
+        public  async Task<IActionResult> Edit(int id)
         {
             var post = _repository.GetPostById(id);
-            ViewData["CatId"] = new SelectList(_categoriesRepository.GetCatList(), "CatId", "CatName");
+            //var categories = _categoriesRepository.LoadCatgories();
+
+            //ViewData["catList"] = new SelectList(categories, "CatId", "CatName");
 
             if (post == null)
             {
@@ -209,6 +212,7 @@ namespace MyBlog.Areas.Admin.Controllers
 
             return View("Update", post);
         }
+
         //public IActionResult Update(int? id)
         //{
         //    if (id == null)

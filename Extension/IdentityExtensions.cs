@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Specialized;
+using System.Linq;
+using System.Net;
+using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 using System.Security.Claims;
+using System.Text;
 
 namespace MyBlog.Extension
 {
@@ -34,6 +39,22 @@ namespace MyBlog.Extension
         {
             var claim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == claimType);
             return (claim != null) ? claim.Value : string.Empty;
+        }
+        public static  bool VerifyEmail(string emailVerify)
+        {
+            using (WebClient webclient = new WebClient())
+            {
+                string url = "http://verify-email.org/";
+                NameValueCollection formData = new NameValueCollection();
+                formData["check"] = emailVerify;
+                byte[] responseBytes = webclient.UploadValues(url, "POST", formData);
+                string response = Encoding.ASCII.GetString(responseBytes);
+                if (response.Contains("Result: Ok"))
+                {
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }

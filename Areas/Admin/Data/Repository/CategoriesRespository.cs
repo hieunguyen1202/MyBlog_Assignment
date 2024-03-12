@@ -58,5 +58,10 @@ namespace MyBlog.Areas.Admin.Data.Repository
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<Category> LoadCatgories()
+        {
+            return _context.Categories;
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,7 +54,6 @@ namespace MyBlog.Areas.Admin.Data.Repository
 
             if (existingPost != null)
             {
-                // Update the properties of the existing post
                 existingPost.Title = post.Title;
                 existingPost.Contents = post.Contents;
                 existingPost.Thumb = post.Thumb;
@@ -61,11 +62,39 @@ namespace MyBlog.Areas.Admin.Data.Repository
                 existingPost.CatId = post.CatId;
                 existingPost.IsHot = post.IsHot;
                 existingPost.IsNewFeed = post.IsNewFeed;
-
-                // No need to create a new context or call SaveChanges separately
                 _context.SaveChanges();
             }
         }
 
+        public Post GetLastPost()
+        {
+            var post = _context.Posts.OrderByDescending(p => p.CreateTime).FirstOrDefault();
+            return post;
+        }
+        public IEnumerable<Post> GetRecentPosts(int count)
+        {
+            var posts = _context.Posts.OrderByDescending(p => p.CreateTime).Take(count).ToList();
+            return posts;
+        }
+
+        public IEnumerable<Post> GetHotPosts(int count)
+        {
+            var hotPosts = _context.Posts
+                .Where(p => p.IsHot == true)
+                .Take(count)
+                .ToList();
+
+            return hotPosts;
+        }
+
+        public IEnumerable<Post> GetNewFeedPosts(int count)
+        {
+            var hotPosts = _context.Posts
+      .Where(p => p.IsNewFeed == true)
+      .Take(count)
+      .ToList();
+
+            return hotPosts;
+        }
     }
 }

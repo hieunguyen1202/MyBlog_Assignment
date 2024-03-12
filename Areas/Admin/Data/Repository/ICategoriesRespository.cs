@@ -12,5 +12,7 @@ namespace MyBlog.Areas.Admin.Data.Repository
         void UpdateCat(int id, Category cat);
         void DeleteCat(int id);
         Category GetCateById(int? catId);
+        IEnumerable<Category> LoadCatgories();
+
     }
 }

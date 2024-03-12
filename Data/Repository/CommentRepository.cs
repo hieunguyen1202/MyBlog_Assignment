@@ -18,9 +18,11 @@ namespace MyBlog.Data.Repository
             _context.SaveChanges();
         }
 
-        public IEnumerable<Comment> GetCommentList()
+        public IEnumerable<Comment> GetCommentListByPostId(int postId)
         {
-            return _context.Comments.ToList();
+            return _context.Comments
+             .Where(comment => comment.PostId == postId)
+             .ToList();
         }
     }
 }

@@ -4,6 +4,9 @@ using Microsoft.CodeAnalysis.Differencing;
 using MyBlog.Data.Repository;
 using MyBlog.Models;
 using System;
+using System.Collections.Specialized;
+using System.Net;
+using System.Text;
 
 namespace MyBlog.Controllers
 {
@@ -23,9 +26,12 @@ namespace MyBlog.Controllers
         }
 
         // GET: CommentController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int postId)
         {
-            return View();
+            postId = 1;
+            var commentList = _repository.GetCommentListByPostId(postId);
+            ViewData["CommentList"] = commentList;
+            return View("Detail","Home");
         }
 
         // GET: CommentController/Create
@@ -40,18 +46,26 @@ namespace MyBlog.Controllers
         [Route("Create")]
         public ActionResult Create(Comment comment)
         {
-            try { 
-            if (ModelState.IsValid)
-            {comment.CreateAt= DateTime.Now;
-                comment.Published = true;            
-                _repository.createComment(comment);
-                return RedirectToAction("Detail","Home");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    comment.CreateAt = DateTime.Now;
+                    comment.Published = true;
+                    _repository.createComment(comment);
+
+                    // Return a JSON response indicating success
+                    return Json(new { success = true });
+                }
             }
-        }catch (Exception ex)
-			{
-				ViewBag.ErrorMessage = DateTime.Now + " An error occurred while post comment: " + ex.Message;
-			}
-            return View("Detail","Home");
+            catch (Exception ex)
+            {
+                // Return a JSON response indicating failure with an error message
+                return Json(new { success = false, message = "An error occurred while posting the comment: " + ex.Message });
+            }
+
+            // Return a JSON response indicating failure if ModelState is not valid
+            return Json(new { success = false, message = "Invalid ModelState" });
         }
     }
 }

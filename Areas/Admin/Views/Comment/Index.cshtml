@@ -1,0 +1,144 @@
+﻿
+@model PaginatedList<MyBlog.Models.Comment>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="slim-pageheader">
+    <ol class="breadcrumb slim-breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-area="Admin" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a href="Manage" style="padding:4px;background-color:lightgrey;border-radius:4px">QUẢN LÝ BÌNH LUẬN</a></li>
+    </ol>
+    <h4 class="slim-pagetitle">QUẢN LÝ BÌNH LUẬN</h4>
+</div><!-- slim-pageheader -->
+
+
+<div class="slim-pageheader">
+    <div class="col-md-6">
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="clearfix"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+        ID
+            </th> <th>
+          Nội dung
+            </th>
+            <th>
+           Email
+            </th>
+            <th>
+               Công khai
+            </th>
+            <th>
+             Thời gian bình luận
+            </th>
+            <th>
+                Tên bài viết
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentId)
+            </td>          <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Published)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Post.Title)
+            </td>
+            <td>
+                    <button class="btn btn-warning" title="View"> <a asp-action="Detail" asp-controller="Home" asp-route-id="@item.PostId" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
+                    <button title="Delete" class="btn btn-danger" onclick="deleteComment(@item.CommentId)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+<script type="text/javascript">
+    function deleteComment(commentId) {
+        swal({
+            title: "Are you sure?",
+            text: "Are you sure that you want to delete this post?",
+            icon: "warning", // Changed 'type' to 'icon' for newer versions of sweetalert
+            buttons: {
+                cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Yes, delete it",
+                    value: true,
+                    visible: true,
+                    className: "btn-danger",
+                    closeModal: false,
+                }
+            },
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: "/Admin/Comment/Delete",
+                    data: { id: commentId },
+                    type: "POST"
+                })
+                    .done(function (data) {
+                        swal("Deleted!", "Your post was successfully deleted!", "success")
+                            .then(() => {
+                                window.location.reload(); // Optional: Refresh the page after deleting the post
+                            });
+                    })
+                    .fail(function (error) {
+                        swal("Oops!", "An error occurred while deleting the post: " + error.responseText, "error");
+                    });
+            } else {
+                swal("Cancelled", "Your post is safe", "info");
+            }
+        });
+    }
+</script>

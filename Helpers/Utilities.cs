@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Minio;
+using Minio.Exceptions;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +13,10 @@ namespace MyBlog.Helpers
 {
     public static class Utilities
     {
+        private static readonly MinioClient _minioClient;
+        private static readonly IConfiguration _configuration;
+        static string _bucketName = string.Empty;
+
         public static async Task<string> UploadFile(Microsoft.AspNetCore.Http.IFormFile file, string sDirectory, string newname = null)
         {
             if (newname == null)
@@ -90,6 +98,10 @@ namespace MyBlog.Helpers
             }
 
             return url;
+        }
+        public static async Task<dynamic> UploadFile(string filePath, IFormFile file)
+        {
+            return null;
         }
     }
 }

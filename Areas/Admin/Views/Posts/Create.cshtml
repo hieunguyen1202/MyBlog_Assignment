@@ -44,23 +44,22 @@
                     <input class="form-check-input" asp-for="IsNewFeed" /> @Html.DisplayNameFor(model => model.IsNewFeed)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="Author" class="control-label">Tác giả</label>
-                <input asp-for="Author" class="form-control" />
-                <span asp-validation-for="Author" class="text-danger"></span>
-            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Tags" class="control-label"></label>
                 <input asp-for="Tags" class="form-control" />
                 <span asp-validation-for="Tags" class="text-danger"></span>
-            </div>  
+            </div>
             <div class="form-group">
                 <label asp-for="CatId" class="control-label">Danh mục:</label>
                 <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatId"></select>
             </div>
-
+            <div class="form-group">
+                <label asp-for="Author" class="control-label">Tác giả</label>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
 
         </div>
         <div class="col-md-12 form-group">
@@ -70,6 +69,10 @@
                 <span asp-validation-for="Contents" class="text-danger"></span>
             </div>
         </div>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="text-danger">@ViewBag.ErrorMessage</div>
+        }
         <div class="col-md-12 form-group">
             <input type="submit" value="Create" class="btn btn-primary" />
         </div>
@@ -80,31 +83,37 @@
 </div>
 <script type="text/javascript">
     function addPost() {
-        var postData = {
-            Title: $("#Title").val(),
-            Contents: $("#Contents").val(),
-            Thumb: $("#Thumb").val(),
-            IsHot: $("#IsHot").is(":checked"),
-            Published: $("#Published").is(":checked"),
-            IsNewFeed: $("#IsNewFeed").is(":checked"),
-            Author: $("#Author").val(),
-            AccountId: $("#AccountId").val(),
-            Tags: $("#Tags").val(),
-            CatId: $("#CatId").val()
-        };
+        var formData = new FormData();
+
+        formData.append("Title", $("#Title").val());
+        formData.append("Contents", $("#Contents").val());
+        formData.append("Thumb", $("#Thumb")[0].files[0]);
+        formData.append("IsHot", $("#IsHot").is(":checked"));
+        formData.append("Published", $("#Published").is(":checked"));
+        formData.append("IsNewFeed", $("#IsNewFeed").is(":checked"));
+        formData.append("Author", $("#Author").val());
+        formData.append("Scontent", $("#Scontent").val());
+        formData.append("Tags", $("#Tags").val());
+        formData.append("CatId", $("#CatId").val());
 
         $.ajax({
             url: "/Admin/Create",
-            data: postData,
-            type: "POST"
-        })
-            .done(function (data) {
-                swal("Added!", "Your post was successfully added", "success").then(function () {
-                    window.location.href = "/Admin/Manage";
-                });
-            })
-            .fail(function () {
-                swal("Oops!", "An error occurred while adding the post ", "error");
-            });
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.success) {
+                    swal("Added!", "Your post was successfully added", "success").then(function () {
+                        window.location.href = "/Admin/Manage";
+                    });
+                } else {
+                    swal("Oops!", data.message, "error");
+                }
+            },
+            error: function () {
+                swal("Oops!", "An error occurred while adding the post", "error");
+            }
+        });
     }
 </script>

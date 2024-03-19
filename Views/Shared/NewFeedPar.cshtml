@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<MyBlog.Models.Post>
 <div class="section-block">
-    <h1 class="section-title">NEW FEED</h1>
+    <h1 class="section-title">@ViewBag.ListTitle</h1>
     @if (Model != null)
     {
         foreach (var post in Model)
@@ -8,7 +8,7 @@
             <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId">
                 <div class="reward-block d-flex">
                     <div>
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
+                        <img title="@post.Title" src="@(post.Thumb != null ? post.Thumb : "https://d38b044pevnwc9.cloudfront.net/cutout-nuxt/enhancer/2.jpg")" alt="avatar" width="90" height="90" />
                     </div>
                     <div class="ms-2">
                         <h6>@post.Title</h6>

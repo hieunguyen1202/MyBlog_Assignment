@@ -1,0 +1,265 @@
+﻿@model IEnumerable<MyBlog.Models.Post>
+
+<div class="single_sidebar" style="padding-bottom: 20px">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#comments" aria-controls="home" role="tab" data-toggle="tab"></a></li>
+        <li role="presentation" class="active" style="margin-left:36%"><a style="width:110px; text-align: center" href="#category" aria-controls="home" role="tab" data-toggle="tab">@ViewBag.ListTitle</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="category">
+            <ul>
+                @if (Model != null)
+                {
+                    foreach (var post in Model)
+                    {
+                        <li class="cat-item"><a href="#">@post.Tags</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .single_sidebar {
+        float: left;
+        display: inline;
+        width: 100%;
+        margin-bottom: 50px;
+        background: none repeat scroll 0 0 #FFFFFF;
+        border-radius:5px
+    }
+
+        .single_sidebar > h2 {
+            background: none repeat scroll 0 0 #99DEAB;
+            color: #fff;
+            font-family: "Oswald", sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            margin-left: 0;
+            margin-top: 5px;
+            padding: 0;
+            position: relative;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+            .single_sidebar > h2 span {
+                padding: 4px 10px;
+                background: none repeat scroll 0 0 #99DEAB;
+            }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        border-radius: 5px
+    }
+
+    a {
+        text-decoration: none;
+        color: #2f2f2f
+    }
+
+        a:hover {
+            color: #646464;
+            text-decoration: none
+        }
+
+        a:focus {
+            outline: none;
+            text-decoration: none
+        }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Oswald',sans-serif
+    }
+
+    .cat-item a {
+        background: none repeat scroll 0 0 #e4e4e4;
+        color: #888;
+        display: block;
+        float: left;
+        border-bottom: none !important;
+        font-size: 13px;
+        line-height: 12px;
+        margin: 0 2px 2px 0;
+        padding: 12px 17px;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -ms-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s;
+    }
+
+        .cat-item a:hover {
+            color: #fff;
+            text-decoration: none !important;
+        }
+
+    .single_sidebar {
+        float: left;
+        display: inline;
+        width: 100%;
+        margin-bottom: 20px
+    }
+
+        .single_sidebar > h2 {
+            background: none repeat scroll 0 0 #99DEAB;
+            color: #fff;
+            font-family: "Oswald",sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            margin-left: 0;
+            margin-top: 5px;
+            padding: 0;
+            position: relative;
+            text-align: center;
+            text-transform: uppercase
+        }
+
+            .single_sidebar > h2 span {
+                padding: 4px 10px
+            }
+
+    .cat-item a {
+        background: none repeat scroll 0 0 #e4e4e4;
+        color: #888;
+        display: block;
+        float: left;
+        border-bottom: none !important;
+        font-size: 13px;
+        line-height: 12px;
+        margin: 0 2px 2px 0;
+        padding: 12px 17px;
+        -webkit-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s
+    }
+
+        .cat-item a:hover {
+            color: #fff;
+            text-decoration: none !important
+        }
+
+    .tab-content {
+        margin-top: 10px
+    }
+
+    .nav-tabs {
+        background: none repeat scroll 0 0 #333;
+        border-bottom: none
+    }
+
+        .nav-tabs > li {
+            margin-bottom: 0
+        }
+
+            .nav-tabs > li > a {
+                margin-right: 0;
+                color: #fff;
+                font-size: 15px;
+                border-radius: 0;
+                border: none;
+                font-family: "Oswald",sans-serif;
+                -webkit-transition: all 0.5s;
+                -mz-transition: all 0.5s;
+                -ms-transition: all 0.5s;
+                -o-transition: all 0.5s;
+                transition: all 0.5s
+            }
+
+                .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+                    color: #fff !important;
+                    border: none
+                }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                border-width: 0;
+                border-color: #ddd #ddd transparent;
+                color: #fff
+            }
+
+    .sideAdd {
+        display: block;
+        float: left;
+        height: 250px;
+        width: 100%;
+        margin-top: 10px
+    }
+
+        .sideAdd > img {
+            width: 100%;
+            height: 100%
+        }
+
+    .single_sidebar ul li a {
+        border-bottom: 1px solid #333;
+        display: block
+    }
+
+    .single_sidebar .spost_nav li a {
+        border-bottom: none;
+        float: left
+    }
+
+    .tab-content {
+        margin-top: 10px;
+    }
+
+    .nav-tabs {
+        background: none repeat scroll 0 0 #333;
+        border-bottom: none;
+    }
+
+    .cat-item a:hover {
+        background-color: #99DEAB
+    }
+
+    .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+        background-color: #99DEAB
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color: #99DEAB
+    }
+
+    .single_sidebar > ul > li a:hover {
+        color: #99DEAB
+    }
+
+    .nav-tabs > li {
+        margin-bottom: 0;
+    }
+
+        .nav-tabs > li > a {
+            margin-right: 0;
+            color: #fff;
+            font-size: 15px;
+            border-radius: 0;
+            border: none;
+            font-family: "Oswald", sans-serif;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -ms-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+
+            .nav-tabs > li > a:hover,
+            .nav-tabs > li > a:focus {
+                color: #fff !important;
+                border: none;
+            }
+
+        .nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus {
+            border-width: 0;
+            border-color: #ddd #ddd transparent;
+            color: #fff;
+        }
+</style>

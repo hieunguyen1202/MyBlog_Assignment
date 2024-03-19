@@ -15,7 +15,7 @@
                         <span class="type-meta"><i class="fa fa-tag"></i> <a href="#">@(Model.Post.Tags ?? "Null")</a> </span>
                         <span class="type-meta"><i class="fa fa-regular fa-clock"></i>  @string.Format("{0:dd/MM/yyyy}", Model.Post.CreateTime)</span>
                         <div>
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" style="margin-left:15%" width="70%" height=350px" alt="thumb">
+                            <img src="@Model.Post.Thumb" title="@Model.Post.Title" style="margin-left:15%" width="70%" height=350px" alt="thumb">
                         </div>
                         <p>
                             @Model.Post.Contents
@@ -37,25 +37,8 @@
                                             <div iv class="w-100">
                                                 <div class="d-flex">
                                                     <h5>Add a comment</h5>
-                                                    <ul class="rating mb-3 d-flex" style="list-style:none" data-mdb-toggle="rating">
-                                                        <li>
-                                                            <i class="far fa-star fa-sm text-danger" title="Bad"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="far fa-star fa-sm text-danger" title="Poor"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="far fa-star fa-sm text-danger" title="OK"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="far fa-star fa-sm text-danger" title="Good"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="far fa-star fa-sm text-danger" title="Excellent"></i>
-                                                        </li>
-                                                    </ul>
                                                 </div>
-                                                <form onsubmit="event.preventDefault();addComment(this);">
+                                                <form asp-action="Create" asp-controller="Home">
                                                     <input asp-for="NewComment.PostId" class="form-control" type="hidden" id="PostId" name="PostId" value="@ViewBag.postId" />
                                                     <div class="form-group" data-mdb-input-init>
                                                         <label asp-for="NewComment.Email" class="form-label">Email input</label>
@@ -64,14 +47,14 @@
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="form-group">
-                                                        <label class="form-label">What is your view?</label>
+                                                        <label asp-for="NewComment.Content" class="form-label">What is your view?</label>
                                                         <textarea asp-for="NewComment.Content" class="form-control" id="Content" rows="2" name="Content"></textarea>
                                                         <span asp-validation-for="NewComment.Content" class="text-danger"></span>
                                                         <div class="text-danger">@ViewBag.Error</div>
                                                     </div>
                                                     <div class="d-flex justify-content-between mt-3">
                                                         <button type="button" class="btn btn-success" id="clearButton">Clear</button>
-                                                        <button type="submit" class="btn btn-danger" id="commentBtn">
+                                                        <button type="button" class="btn btn-danger" id="commentBtn" onclick="addComment(this.form)">
                                                             Comment<i class="fas fa-long-arrow-alt-right ms-1"></i>
                                                         </button>
                                                     </div>
@@ -88,22 +71,35 @@
                 </section>
 
                 <!--/ list comment-->
-                <section style="background-color: #FFF; overflow-y: scroll; height: 400px;">
-                    <div class="container card">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-md-12 col-lg-10">
-                                <div class="card text-dark">
-                                    <div class="card-body p-4" style="z-index: 1">
-                                        <h4 class="mb-0" style="position: sticky; top: 0; background-color: #FFF; z-index: 1;">Recent comments</h4>
-                                        <p class="fw-light mb-4 pb-2" style="position: sticky; top: 30px; background-color: #FFF; z-index: 1;">Latest Comments section by users</p>
-                            @if (Model != null && Model.CommentList != null && Model.CommentList.Any())
-                            {
+    @if (Model == null || Model.CommentList == null || !Model.CommentList.Any())
+    {
+
+                    <div class="container card" style="background-color: #FFF;">
+                        <div class="row">
+                            <div class="card text-dark">
+                                <div class="card-body p-4" style="z-index: 1">
+                                    <h6 class="text-center">No data available in table</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+    }
+    else
+    {
+                    <section style="background-color: #FFF; overflow-y: scroll; height: 400px;">
+                        <div class="container card">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-12 col-lg-10">
+                                    <div class="card text-dark">
+                                        <div class="card-body p-4" style="z-index: 1">
+                                            <h4 class="mb-0" style="position: sticky; top: 0; background-color: #FFF; z-index: 1;">Recent Comments</h4>
+                                            <p class="fw-light mb-4 pb-2" style="position: sticky; top: 30px; background-color: #FFF; z-index: 1;">Latest comments section by users</p>
+
                                 @foreach (var comment in Model.CommentList)
                                 {
                                                 <div class="d-flex flex-start">
-                                                    <img class="rounded-circle shadow-1-strong me-3"
-                                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
-                                                         height="60" />
+                                                    <img class="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60" height="60" />
                                                     <div class="d-flex flex-column">
                                                         <h6 class="text-dark mb-0">@HideEmail(comment.Email)</h6>
                                                         <p class="text-black-50 h-25 mb-0">@comment.CreateAt?.ToString("MMMM dd, yyyy")</p>
@@ -112,15 +108,13 @@
                                                 </div>
                                                 <hr />
                                 }
-                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-
+                    </section>
+    }
 
                 <!--/comment-->
             </div>
@@ -129,24 +123,28 @@
             <!--/main content-->
             <!--sidebar-->
             <div class="content col-md-4 col-sm-12 col-xs-12">
-                <!-- Recent post-->  
+                <!-- Recent post-->
                 <div id="recent-posts"></div>
-                <!--reward blocks-->
-                <!--/reward blocks-->
+
 
                 <div id="newfeed-posts"></div>
-                    <div class="section-block">
-                        <h5 class="text-dark">Advertisement</h5>
-                    </div>
+
+                <div id="tag-comment"></div>
+                <div class="clearfix"></div>
+                <div class="section-block d-block">
+                    <h5 class="text-dark">Advertisement</h5>
                 </div>
-                <!--/sidebar-->
             </div>
+            <!--/sidebar-->
         </div>
     </div>
+</div>
 @section Scripts {
     <script>
         $('#recent-posts').load("/home/recent"),
-            $('#newfeed-posts').load("/home/newfeed")
+            $('#newfeed-posts').load("/home/newfeed"),
+            $('#tag-comment').load("/home/tagComment")
+
     </script>
 }
 @functions {
@@ -169,84 +167,83 @@
 
         return email;
     }
-    }
+}
 
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            const clearButton = document.getElementById('clearButton');
-            const emailInput = document.querySelector('input[name="Email"]');
-            const commentTextArea = document.getElementById('Content');
-            const commentBtn = document.getElementById('commentBtn');
-            const postIdInput = document.getElementById('PostId');
-            postIdInput.value = '@ViewBag.postId';
-            function checkInputs() {
-                const emailValue = emailInput.value.trim();
-                const commentValue = commentTextArea.value.trim();
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const clearButton = document.getElementById('clearButton');
+        const emailInput = document.querySelector('input[name="Email"]');
+        const commentTextArea = document.getElementById('Content');
+        const commentBtn = document.getElementById('commentBtn');
+        const postIdInput = document.getElementById('PostId');
+        postIdInput.value = '@ViewBag.postId';
+        function checkInputs() {
+            const emailValue = emailInput.value.trim();
+            const commentValue = commentTextArea.value.trim();
 
-                if (emailValue !== '' && commentValue !== '') {
-                    commentBtn.removeAttribute('disabled');
-                    clearButton.removeAttribute('disabled');
-                } else if (emailValue !== '' || commentValue !== '') {
-                    commentBtn.setAttribute('disabled', 'disabled');
-                    clearButton.removeAttribute('disabled');
-                } else {
-                    clearButton.setAttribute('disabled', 'disabled');
-                    commentBtn.setAttribute('disabled', 'disabled');
-                }
-            }
-
-            // Add input event listeners to both email and comment fields
-            emailInput.addEventListener('input', checkInputs);
-            commentTextArea.addEventListener('input', checkInputs);
-
-            // Check inputs on form load
-            checkInputs();
-
-            // Clear button click event
-            clearButton.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent form submission
-
-                // Clear the form fields
-                emailInput.value = '';
-                commentTextArea.value = '';
-
-                // Disable the comment button after clearing
+            if (emailValue !== '' && commentValue !== '') {
+                commentBtn.removeAttribute('disabled');
+                clearButton.removeAttribute('disabled');
+            } else if (emailValue !== '' || commentValue !== '') {
                 commentBtn.setAttribute('disabled', 'disabled');
-            });
-        });
-
-    </script>
-    <script type="text/javascript">
-        function addComment(form) {
-            var commentData = {
-                Email: $("#Email", form).val(),
-                Content: $("#Content", form).val(),
-                PostId: $("#PostId", form).val()
-            };
-
-            $.ajax({
-                url: "/Create",
-                data: JSON.stringify(commentData),
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
-            })
-                .done(function (data) {
-                    if (data.success) {
-                        swal("Added!", "Your post was successfully added", "success").then(function () {
-                            window.location.href = "/Detail/" + commentData.PostId;
-                        });
-                    } else {
-                        swal("Oops!", data.message, "error");
-                    }
-                })
-                .fail(function () {
-                    swal("Oops!", "An error occurred while adding the post", "error");
-                });
+                clearButton.removeAttribute('disabled');
+            } else {
+                clearButton.setAttribute('disabled', 'disabled');
+                commentBtn.setAttribute('disabled', 'disabled');
+            }
         }
-    </script>
 
+        // Add input event listeners to both email and comment fields
+        emailInput.addEventListener('input', checkInputs);
+        commentTextArea.addEventListener('input', checkInputs);
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        // Check inputs on form load
+        checkInputs();
+
+        // Clear button click event
+        clearButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Clear the form fields
+            emailInput.value = '';
+            commentTextArea.value = '';
+
+            // Disable the comment button after clearing
+            commentBtn.setAttribute('disabled', 'disabled');
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    function addComment(form) {
+        var commentData = {
+            Email: $("#Email", form).val(),
+            Content: $("#Content", form).val(),
+            PostId: $("#PostId", form).val()
+        };
+
+        $.ajax({
+            url: "/create",
+            data: commentData,
+            type: "POST",
+            dataType: "json" // Expect JSON response
+        })
+            .done(function (data) {
+                if (data.success) {
+                    swal("Added!", "Your comment was successfully added", "success").then(function () {
+                        window.location.href = "/Detail/" + commentData.PostId;
+                    });
+                } else {
+                    // Handle any error message from the server
+                    swal("Oops!", data.message || "An error occurred while adding the comment", "error");
+                }
+            })
+            .fail(function () {
+                swal("Oops!", "An error occurred while adding the comment", "error");
+            });
+    }
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 

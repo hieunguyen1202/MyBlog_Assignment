@@ -1,6 +1,9 @@
 ﻿@model MyBlog.Models.Post
 
-
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
 <div class="slim-pageheader">
     <ol class="breadcrumb slim-breadcrumb">
         <li class="breadcrumb-item"><a href="/Admin/Home">TRANG CHỦ</a></li>
@@ -13,7 +16,7 @@
 </div><!-- slim-pageheader -->
 <hr />
 <div class="row" style="margin:0 10%">
-    <form onsubmit="event.preventDefault(); updatePost();">
+    <form onsubmit="event.preventDefault(); updatePost();" enctype="multipart/form-data">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="PostId" />
@@ -25,9 +28,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Thumb" class="control-label"></label>
-                              <input type="file" asp-for="Thumb" name="Thumb" class="form-control" />
+                <input type="file" asp-for="Thumb" class="form-control" />
                 <span asp-validation-for="Thumb" class="text-danger"></span>
             </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsHot" /> @Html.DisplayNameFor(model => model.IsHot)
@@ -39,9 +43,14 @@
                     <input class="form-check-input" asp-for="IsNewFeed" /> @Html.DisplayNameFor(model => model.IsNewFeed)
                 </label>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Scontent" class="control-label"></label>
+                <input asp-for="Scontent" class="form-control">
+                <span asp-validation-for="Scontent" class="text-danger"></span>
+            </div>
         </div>
         <div class="col-md-6">
-
             <div class="form-group">
                 <label asp-for="Author" class="control-label"></label>
                 <input asp-for="Author" class="form-control" />
@@ -49,17 +58,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="CatId" class="control-label">Danh mục:</label>
-                <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatList"></select>
+                <select asp-for="CatId" class="form-control">
+                    @if (ViewBag.Categories != null)
+                    {
+                        foreach (var category in ViewBag.Categories as List<Category>)
+                        {
+                            bool selected = category.CatId == ViewBag.CatId;
+                            <option value="@category.CatId" selected="@selected">@category.CatName</option>
+                        }
+                    }
+                    else
+                    {
+                        <option>Please choose category</option>
+                    }
+                </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="Tags" class="control-label"></label>
                 <input asp-for="Tags" class="form-control" />
                 <span asp-validation-for="Tags" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Scontent" class="control-label"></label>
-                <textarea rows="2" asp-for="Scontent" class="form-control"></textarea>
-                <span asp-validation-for="Scontent" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-12 form-group">
@@ -73,7 +91,7 @@
             <div id="messageContainer"></div>
         </div>
         <div class="col-md-12 form-group">
-            <input type="submit" value="Save" class="btn btn-primary"  />
+            <input type="submit" value="Save" class="btn btn-primary" />
         </div>
 
     </form>
@@ -81,34 +99,35 @@
 
 <script type="text/javascript">
     function updatePost() {
-        var postData = {
-            PostId: $("#PostId").val(),
-            Title: $("#Title").val(),
-            Contents: $("#Contents").val(),
-            Thumb: $("#Thumb").val(),
-            IsHot: $("#IsHot").is(":checked"),
-            Published: $("#Published").is(":checked"),
-            IsNewFeed: $("#IsNewFeed").is(":checked"),
-            Author: $("#Author").val(),
-            AccountId: $("#AccountId").val(),
-            Tags: $("#Tags").val(),
-            CatId: $("#CatId").val()
-        };
-
+        var formData = new FormData();
+        formData.append("PostId", $("#PostId").val());
+        formData.append("Title", $("#Title").val());
+        formData.append("Contents", $("#Contents").val());
+        formData.append("Scontent", $("#Scontent").val());
+        formData.append("Thumb", $("#Thumb")[0].files[0]); // Append the file
+        formData.append("IsHot", $("#IsHot").is(":checked"));
+        formData.append("Published", $("#Published").is(":checked"));
+        formData.append("IsNewFeed", $("#IsNewFeed").is(":checked"));
+        formData.append("Author", $("#Author").val());
+        formData.append("Tags", $("#Tags").val());
+        formData.append("CatId", $("#CatId").val());
         $.ajax({
-            url: "/Admin/Update/" + postData.PostId,
-            data: postData,
-            type: "POST"
-        })
-            .done(function (data) {
+            url: "/Admin/Update/" + $("#PostId").val(),
+            data: formData,
+            type: "POST",
+            processData: false, // Don't process the data
+            contentType: false, // Don't set content type
+            success: function (data) {
                 var successMessage = "Your post was successfully updated";
                 displayMessage(successMessage, false);
-            })
-            .fail(function () {
+            },
+            error: function () {
                 var errorMessage = "An error occurred while updating the post";
                 displayMessage(errorMessage, true);
-            });
+            }
+        });
     }
+
 
     function displayMessage(message, isError) {
         var messageElement = document.createElement("div");
@@ -123,4 +142,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

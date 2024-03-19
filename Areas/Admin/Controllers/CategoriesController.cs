@@ -62,7 +62,7 @@ namespace MyBlog.Areas.Admin.Controllers
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             return View(await PaginatedList<Category>.CreateAsync(cats.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 

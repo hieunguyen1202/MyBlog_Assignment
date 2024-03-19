@@ -30,7 +30,7 @@
 }
 <body class="skin-black">
     <!-- header logo: style can be found in header.less -->
-    <header class="header">
+    <header class="header" style="position: sticky; top: 0; background-color: #FFF; z-index: 1;">
         <a class="logo" href="/Admin/Home">
             Admin
         </a>
@@ -46,6 +46,13 @@
             <div class="navbar-right">
                 <!-- Notification -->
                 <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="/home"><i class="fa fa-home"></i></a>
+                        <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                            <li class="divider"></li>
+                        </ul>
+                    </li>    
                     <li class="dropdown user user-menu">
                         <a href="#" onclick="showNotification()"><i class="fa fa-bell fa-fw pull-right"></i></a>
                         <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
@@ -101,7 +108,7 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="active">
-                        <a href="index.html">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
@@ -136,7 +143,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Quản lí bình luận</a></li>
+                            <li class="active"><a asp-area="Admin" asp-controller="Comment" asp-action="Index"><i class="fa fa-circle-o"></i> Quản lí bình luận</a></li>
                         </ul>
                     </li>
 
@@ -148,7 +155,6 @@
 
         <aside class="right-side">
             @RenderBody()
-
             <div class="footer-main">
                 Copyright &copy Director, 2024
             </div>
@@ -186,6 +192,6 @@
         $(document).ready(function () { swal("something"); });
     }
 </script>
-
+@await RenderSectionAsync("Scripts", required: false)
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </html>

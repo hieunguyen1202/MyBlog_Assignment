@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MyBlog.Models.Post>
+
+
+<div class="single_post_content">
+    <h2><span>@ViewBag.ListTitle</span></h2>
+    <ul class="business_catgnav wow fadeInDown">
+        @if (Model != null && Model.Any())
+        {
+            var singlePost = Model.First();
+            if(singlePost.Published == true)
+            {
+                <li>
+                    <figure class="bsbig_fig">
+                        <a asp-action="Detail" asp-controller="Home" asp-route-id="@singlePost.PostId" class="featured_img">
+                            <img alt="thumb" title="@singlePost.Title" src="@singlePost.Thumb">
+                            <span class="overlay"></span>
+                        </a>
+                        <figcaption>
+                            <a asp-action="Detail" asp-controller="Home" asp-route-id="@singlePost.PostId">@singlePost.Title</a>
+                        </figcaption>
+                        <p>@singlePost.Scontent</p>
+                    </figure>
+                </li>
+            }
+        }
+    </ul>
+    <ul class="spost_nav">
+        @if (Model != null && Model.Count() > 1)
+        {
+            foreach (var post in Model.Skip(1))
+            {
+                if(post.Published == true)
+                {
+                    <li>
+                        <div class="media wow fadeInDown d-flex">
+                            <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="media-left">
+                                <img alt="thumb" title="@post.Title" src="@post.Thumb">
+                            </a>
+                            <div class="media-body ms-2">
+                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="catg_title text-truncate" style="max-width: 260px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">@post.Title</a>
+                                <p class="text-truncate" style="max-width: 260px; font-size:15px">@post.Scontent</p>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

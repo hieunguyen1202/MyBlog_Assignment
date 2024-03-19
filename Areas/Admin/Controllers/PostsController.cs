@@ -24,6 +24,10 @@ using Minio.DataModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Minio.Exceptions;
+using Microsoft.CodeAnalysis;
+using System.Net.Mime;
 
 namespace MyBlog.Areas.Admin.Controllers
 {
@@ -32,16 +36,22 @@ namespace MyBlog.Areas.Admin.Controllers
 
     public class PostsController : Controller
     {
-   private readonly IPostRespository _repository;
-    private readonly ICategoriesRespository _categoriesRepository;
-    private readonly IMinioClient _minioClient;
+        private readonly IPostRespository _repository;
+        private readonly ICategoriesRespository _categoriesRepository;
+        private readonly IAccountsRepository _accountsRepository;
+        private readonly MinioClient _client;
+        private readonly IConfiguration _configuration;
+        string _bucketName = string.Empty;
 
-    public PostsController(IPostRespository repository, ICategoriesRespository categoriesRepository, IMinioClient minioClient)
-    {
-        _repository = repository;
-        _categoriesRepository = categoriesRepository;
-        _minioClient = minioClient;
-    }
+        public PostsController(IPostRespository repository, ICategoriesRespository categoriesRepository, MinioClient minioClient, IAccountsRepository accountsRepository, IConfiguration configuration)
+        {
+            _repository = repository;
+            _categoriesRepository = categoriesRepository;
+            _client = minioClient;
+            _accountsRepository = accountsRepository;
+            _configuration = configuration;
+            _bucketName = configuration["MinIO:Bucket"];
+        }
 
         [HttpGet]
         [Route("Manage")]
@@ -51,7 +61,13 @@ namespace MyBlog.Areas.Admin.Controllers
             IQueryable<Post> posts = _repository.GetPostsList();
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            var taikhoanID = HttpContext.Session.GetString("AccountId");
+            int accountId = Int32.Parse(taikhoanID);
 
+
+            var account = _accountsRepository.GetAccountById(accountId);
+            ViewData["Account"] = account;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -65,7 +81,7 @@ namespace MyBlog.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 posts = posts.Where(s => (s.Title != null && s.Title.Contains(searchString)) ||
-                         (s.Contents != null && s.Contents.Contains(searchString)));
+                         (s.Contents != null && s.Contents.Contains(searchString)) || (s.PostId != null && s.PostId.ToString().Contains(searchString)));
             }
             if (!posts.Any())
             {
@@ -76,18 +92,18 @@ namespace MyBlog.Areas.Admin.Controllers
                 case "name_desc":
                     posts = posts.OrderByDescending(s => s.Title);
                     break;
-                case "Date":
-                    posts  = posts .OrderBy(s => s.CreateTime);
+                case "date":
+                    posts = posts.OrderBy(s => s.CreateTime);
                     break;
                 case "date_desc":
-                    posts  = posts .OrderByDescending(s => s.CreateTime);
+                    posts = posts.OrderByDescending(s => s.CreateTime);
                     break;
                 default:
-                    posts  = posts .OrderBy(s => s.PostId);
+                    posts = posts.OrderBy(s => s.PostId);
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             return View(await PaginatedList<Post>.CreateAsync(posts.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -95,10 +111,10 @@ namespace MyBlog.Areas.Admin.Controllers
         //GET: Create
         [HttpGet]
         [Route("Create")]
-        [CustomeAuthen(View = "Create")]
+        //[CustomeAuthen(View = "Create")]
         public async Task<IActionResult> Create()
-        { 
-           ViewData["CatId"] = new SelectList(_categoriesRepository.GetCatList(), "CatId", "CatName");
+        {
+            ViewData["CatId"] = new SelectList(_categoriesRepository.GetCatList(), "CatId", "CatName");
             return View();
         }
         [HttpGet]
@@ -111,54 +127,140 @@ namespace MyBlog.Areas.Admin.Controllers
             return View();
         }
 
-		[HttpPost]
-		[Route("Create")]
-		public async Task<IActionResult> Create(Post obj)
-		{
-			try
-			{
-				obj.CreateTime = DateTime.Now;
+        [HttpPost]
+        [Route("Create")]
+        public async Task<IActionResult> Create(Post obj, IFormFile Thumb)
+        {
+            try
+            {
+                obj.CreateTime = DateTime.Now;
 
-                if (Request.Form.Files.Count > 0)
+                // Check if the bucket exists, create it if it doesn't
+                var bktExistArgs = new BucketExistsArgs().WithBucket(_bucketName);
+                var found = await _client.BucketExistsAsync(bktExistArgs).ConfigureAwait(false);
+
+                if (!found)
                 {
-                    var image = Request.Form.Files[0];
-                    if (image.Length > 0)
+                    var mkBktArgs = new MakeBucketArgs().WithBucket(_bucketName);
+                    await _client.MakeBucketAsync(mkBktArgs).ConfigureAwait(false);
+                }
+
+                // Check if the uploaded file is not null
+                if (Thumb != null)
+                {
+                    // Check if the uploaded file is an image
+                    if (IsImageFile(Thumb))
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                        var bucketName = "myblog";
-                        var objectName = fileName;
-                        var contentType = image.ContentType;
-
-                        using (var stream = image.OpenReadStream())
-                        {
-                            var poa = new PutObjectArgs()
-                            .WithBucket(bucketName)
-    .WithObject(objectName)
-    .WithFileName(fileName)
-    .WithContentType(contentType);
-
-                            await _minioClient.PutObjectAsync(poa);
-                        }
-						obj.Thumb = fileName;
-					}
-                   
+                        var objectName = $"{Thumb.FileName}";
+                        await MinIO.PutMinIO(Thumb);
+                        obj.Thumb = objectName;
+                        ViewBag.ErrorMessage = "Successfully uploaded " + objectName;
                     }
+                    else
+                    {
+                        // Handle the case where the uploaded file is not an image
+                        var errorMessage = "Please upload a valid image file.";
+                        return Json(new { success = false, message = errorMessage });
+                    }
+                }
+                else
+                {
+                    // Handle the case where the uploaded file is null or undefined
+                    var errorMessage = "Please upload an image file.";
+                    return Json(new { success = false, message = errorMessage });
+                }
 
-                    _repository.InsertPost(obj);
+                _repository.InsertPost(obj);
+                return Json(new { success = true }); // Return success response
+            }
+            catch (MinioException ex)
+            {
+                ViewBag.ErrorMessage = DateTime.Now + " An error occurred while creating the post: " + ex.Message;
+                return Json(new { success = false, message = ex.Message }); // Return error response
+            }
+        }
 
-                    return RedirectToAction(nameof(Create));
 
-                }catch (Exception ex)
-			{
-				ViewBag.ErrorMessage = DateTime.Now + " An error occurred while creating the post: " + ex.Message;
-			}
 
-			return View(obj);
-		}
+        private bool IsImageFile(IFormFile file)
+        {
+            // Validate if the file is an image
+            if (file.ContentType.ToLower() == "image/jpeg" ||
+                file.ContentType.ToLower() == "image/png" ||
+                file.ContentType.ToLower() == "image/gif" ||
+                file.ContentType.ToLower() == "image/jpg")
+            {
+                return true;
+            }
+            return false;
+        }
+        MyBlogContext myBlogContext = new MyBlogContext();
+        [HttpGet]
+        [Route("Update/{id}")]
+        [CustomeAuthen(View = "Edit")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var post = _repository.GetPostById(id);
+            var categories = myBlogContext.Categories.ToList();
 
-		[HttpPost]
+            if (post == null)
+            {
+                return NotFound();
+            }
+            ViewBag.CatId = post.CatId;
+            ViewBag.Categories = categories;
+
+            return View("Edit", post);
+        }
+
+
+        [HttpPost]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> Edit(int id, Post post, IFormFile Thumb)
+        {
+            post.Thumb = null;
+            var thumb = myBlogContext.Posts.Where(p => p.PostId == id).FirstOrDefault();
+            try
+            {
+                if (Thumb != null && Thumb.Length > 0) // Check if a new file is uploaded and it has content
+                {
+                    if (IsImageFile(Thumb))
+                    {
+                        var objectName = $"{Thumb.FileName}";
+                        await MinIO.PutMinIO(Thumb);
+                        post.Thumb = objectName;
+                        ViewBag.ErrorMessage = "Successfully uploaded " + objectName;
+                    }
+                    else
+                    {
+                        // Handle invalid file type error
+                        ModelState.AddModelError("", "Invalid file type. Please upload an image file.");
+                        return View("Edit", post);
+                    }
+                }
+                else
+                {
+                    // If no new file is uploaded, retain the existing Thumb value
+                    post.Thumb = thumb.Thumb;
+                }
+
+                _repository.UpdatePost(id, post);
+                TempData["SuccessMessage"] = "Your post was successfully updated";
+                return RedirectToAction("Manage", "Admin");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while updating the post: " + ex.Message);
+            }
+
+            return View("Edit", post);
+        }
+
+
+
+        [HttpPost]
         [Route("Delete")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -174,67 +276,6 @@ namespace MyBlog.Areas.Admin.Controllers
             }
             return View(nameof(Index));
         }
-        [HttpPost]
-        [Route("Update/{id}")]
-        public IActionResult Update(int id, Post post)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _repository.UpdatePost(id, post);
-                    TempData["SuccessMessage"] = "Your post was successfully updated";
-                    return RedirectToAction("Manage", "Admin");
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "An error occurred while updating the post: " + ex.Message);
-            }
 
-            return View("Update", post);
-        }
-
-        [HttpGet]
-        [Route("Update/{id}")]
-        //[CustomeAuthen(View = "Edit")]
-        public  async Task<IActionResult> Edit(int id)
-        {
-            var post = _repository.GetPostById(id);
-            //var categories = _categoriesRepository.LoadCatgories();
-
-            //ViewData["catList"] = new SelectList(categories, "CatId", "CatName");
-
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return View("Update", post);
-        }
-
-        //public IActionResult Update(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var post = _repository.GetPostById(id.Value);
-
-        //    if (post == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(post);
-        //}
-
-        //[HttpGet]
-        //[Route("Manage")]
-        //public IActionResult GetAll()
-        //{
-        //    return View();
-        //}
     }
 }

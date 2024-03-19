@@ -29,17 +29,12 @@ namespace MyBlog.Controllers
             _repositoryComment = repositoryComment;
         }
         [HttpGet]
-        [Route("/home", Name ="Home")]
+        [Route("/home", Name = "Home")]
         public IActionResult Index()
         {
             var postList = _repositoryPost.GetPostsList();
             ViewBag.catList = _repository.GetCatList();
-            //var catList = _repository.GetCatList();
-            //var viewModel = new IndexViewModel
-            //{
-            //   Categories = catList.ToList(),
-            //   Posts = postList.ToList()
-            //};
+
             return View();
         }
         [HttpGet]
@@ -57,6 +52,8 @@ namespace MyBlog.Controllers
             ViewBag.catList = _repository.GetCatList();
             var commentList = _repositoryComment.GetCommentListByPostId(id);
             var currentPost = _repositoryPost.GetPostById(id);
+            var url = await MinIO.GetMinIO(currentPost.Thumb);
+            currentPost.Thumb = url;
             //var recentPost = _repositoryPost.GetRecentPosts(1).FirstOrDefault();
             if (currentPost == null)
             {
@@ -74,19 +71,29 @@ namespace MyBlog.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Create")]
-        public ActionResult Create(Comment comment)
+        [Route("/create", Name = "Create")]
+        public IActionResult Create(Comment comment)
         {
             try
-            { 
+            {
                 if (ModelState.IsValid)
                 {
+                    int count = _repositoryComment.GetCommentByEmailAndPost(comment.Email, (int)comment.PostId);
+                    if (count >= 3)
+                    {
+                        return Json(new { success = false, message = "Cannot comment more than 3 times per one post" });
+                    }
                     comment.CreateAt = DateTime.Now;
                     comment.Published = true;
                     _repositoryComment.createComment(comment);
+                    // If everything is successful, return JSON indicating success
+                    return Json(new { success = true, postId = comment.PostId });
                 }
-                return RedirectToAction("Detail", new { id = comment.PostId });
+                else
+                {
+                    // Handle invalid model state, perhaps return validation errors
+                    return BadRequest(ModelState);
+                }
             }
             catch (Exception ex)
             {
@@ -94,6 +101,39 @@ namespace MyBlog.Controllers
                 return Json(new { success = false, message = "An error occurred while posting the comment: " + ex.Message });
             }
         }
+
+        [HttpPost]
+        [Route("Search")]
+        public async Task<IActionResult> Search(string search, int? pageNumber)
+        {
+            ViewBag.catList = _repository.GetCatList();
+
+            var searchResult = _repositoryPost.SearchPost(search);
+            foreach (var searchP in searchResult)
+            {
+                var url = await MinIO.GetMinIO(searchP.Thumb);
+                searchP.Thumb = url;
+            }
+
+            // ViewBag.Total should be set before paging
+            ViewBag.Total = searchResult.Count();
+
+            int pageSize = 4;
+
+            var paginatedSearchResult = await PaginatedList<Post>.CreateAsync(searchResult.AsQueryable(), pageNumber ?? 1, pageSize);
+
+            var postDetailViewModel = new PostDetailViewModel
+            {
+                Post = null, 
+                Category = null,
+                CurrentPost = paginatedSearchResult, 
+                CommentList = null, 
+                NewComment = null,
+            };
+
+            return View("Search", postDetailViewModel); 
+        }
+
 
         public IActionResult Privacy()
         {

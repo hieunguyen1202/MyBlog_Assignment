@@ -5,29 +5,23 @@
 @model MyBlog.Models.Post
 <link href="~/css/stylehome.css" rel="stylesheet" />
 @* <link href="~/css/bootstrap.min.css" rel="stylesheet" />  *@
-  <link href="~/css/theme.css" rel="stylesheet" />  
+<link href="~/css/theme.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+@* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"> *@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 <div class="mt-5">
     <section>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-8">
-                <div class="slick_slider">
-                    <div class="single_iteam">
-                        <a href="pages/single_page.html"> <img src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708855214932-17088615686691752624803-1708863458810-1708863477247181334241.jpeg" alt=""></a>
-                        <div class="slider_article">
-                            <h2><a class="slider_tittle" href="pages/single_page.html">Fusce eu nulla semper porttitor felis sit amet</a></h2>
-                            <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui...</p>
-                        </div>
-                    </div>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                    <div id="first-post" style="height:45px;width:730px"></div>
                 </div>
             </div>
             @* popular post *@
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div id="hot-posts"></div>
-                @{
-                    ViewBag.ListTitle = "Hot Posts";
-                }
 
             </div>
         </div>
@@ -36,227 +30,28 @@
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-8">
                 <div class="left_content">
-                    <div class="single_post_content">
-                        <h2><span>Business</span></h2>
-                        <div class="single_post_content_left">
-                            <ul class="business_catgnav  wow fadeInDown">
-                                <li>
-                                    <figure class="bsbig_fig">
-                                        <a href="pages/single_page.html" class="featured_img"> <img alt="" src="images/featured_img1.jpg"> <span class="overlay"></span> </a>
-                                        <figcaption> <a href="pages/single_page.html">Proin rhoncus consequat nisl eu ornare mauris</a> </figcaption>
-                                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
-                                    </figure>
-                                </li>
-                            </ul>
-                        </div>
+                    <div id="catTech-post"></div>
 
-                    </div>
                     <div class="fashion_technology_area">
                         <div class="fashion">
-                            <div class="single_post_content">
-                                <h2><span>Fashion</span></h2>
-                                <ul class="business_catgnav wow fadeInDown">
-                                    <li>
-                                        <figure class="bsbig_fig">
-                                            <a href="pages/single_page.html" class="featured_img"> <img alt="" src="images/featured_img2.jpg"> <span class="overlay"></span> </a>
-                                            <figcaption> <a href="pages/single_page.html">Proin rhoncus consequat nisl eu ornare mauris</a> </figcaption>
-                                            <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
-                                        </figure>
-                                    </li>
-                                </ul>
-                                <ul class="spost_nav">
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                            <div id="category-post"></div>
                         </div>
                         <div class="technology">
-                            <div class="single_post_content">
-                                <h2><span>Technology</span></h2>
-                                <ul class="business_catgnav">
-                                    <li>
-                                        <figure class="bsbig_fig wow fadeInDown">
-                                            <a href="pages/single_page.html" class="featured_img"> <img alt="" src="images/featured_img3.jpg"> <span class="overlay"></span> </a>
-                                            <figcaption> <a href="pages/single_page.html">Proin rhoncus consequat nisl eu ornare mauris</a> </figcaption>
-                                            <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
-                                        </figure>
-                                    </li>
-                                </ul>
-                                <ul class="spost_nav">
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="single_post_content">
-                        <h2><span>Games</span></h2>
-                        <div class="single_post_content_left">
-                            <ul class="business_catgnav">
-                                <li>
-                                    <figure class="bsbig_fig  wow fadeInDown">
-                                        <a class="featured_img" href="pages/single_page.html"> <img src="images/featured_img1.jpg" alt=""> <span class="overlay"></span> </a>
-                                        <figcaption> <a href="pages/single_page.html">Proin rhoncus consequat nisl eu ornare mauris</a> </figcaption>
-                                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
-                                    </figure>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="single_post_content_right">
-                            <ul class="spost_nav">
-                                <li>
-                                    <div class="media wow fadeInDown">
-                                        <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                        <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media wow fadeInDown">
-                                        <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                        <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media wow fadeInDown">
-                                        <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                        <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media wow fadeInDown">
-                                        <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                        <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div id="category1-post"> </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <aside class="right_content">
-              
-                        <div id="newfeed-posts"></div> @* new feed *@
-                    <div class="single_sidebar">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Category</a></li>
-                            <li role="presentation"><a href="#video" aria-controls="profile" role="tab" data-toggle="tab">Video</a></li>
-                            <li role="presentation"><a href="#comments" aria-controls="messages" role="tab" data-toggle="tab">Comments</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="category">
-                                <ul>
-                                    <li class="cat-item"><a href="#">Sports</a></li>
-                                    <li class="cat-item"><a href="#">Fashion</a></li>
-                                    <li class="cat-item"><a href="#">Business</a></li>
-                                    <li class="cat-item"><a href="#">Technology</a></li>
-                                    <li class="cat-item"><a href="#">Games</a></li>
-                                    <li class="cat-item"><a href="#">Life &amp; Style</a></li>
-                                    <li class="cat-item"><a href="#">Photography</a></li>
-                                </ul>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="video">
-                                <div class="vide_area">
-                                    <iframe width="100%" height="250" src="http://www.youtube.com/embed/h5QWbURNEpA?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="comments">
-                                <ul class="spost_nav">
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856266966-17088615685951933036447-1708863502670-17088635049081228634399.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media wow fadeInDown">
-                                            <a href="pages/single_page.html" class="media-left"> <img alt="" src="https://afamilycdn.com/150157425591193600/2024/2/25/snapedit1708856726875-1708861568545386480094-1708863533669-17088635347111368131309.jpeg"> </a>
-                                            <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
+                    <div id="recent-posts"></div> @* new feed *@
+                    @* tablist *@
+                    <div id="tag-comment"></div>
                     <div class="single_sidebar wow fadeInDown">
                         <h2><span>Sponsor</span></h2>
-                        <a class="sideAdd" href="#"><img src="images/add_img.jpg" alt=""></a>
-                    </div>
-                    <div class="single_sidebar wow fadeInDown">
-                        <h2><span>Category Archive</span></h2>
-                        <select class="catgArchive">
-                            <option>Select Category</option>
-                            <option>Life styles</option>
-                            <option>Sports</option>
-                            <option>Technology</option>
-                            <option>Treads</option>
-                        </select>
-                    </div>
-                    <div class="single_sidebar wow fadeInDown">
-                        <h2><span>Links</span></h2>
-                        <ul>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Rss Feed</a></li>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Life &amp; Style</a></li>
-                        </ul>
+                        <a class="sideAdd" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Logo_FPT_Education.png" alt=""></a>
                     </div>
                 </aside>
             </div>
@@ -266,6 +61,20 @@
 @section Scripts {
     <script>
         $('#hot-posts').load("/home/view"),
-            $('#newfeed-posts').load("/home/newfeed")
+            $('#recent-posts').load("/home/recentPost"),
+            $('#tag-comment').load("/home/tagComment"),
+            $('#first-post').load("/home/carousel"),
+            $('#category-post').load("/home/category"),
+            $('#category1-post').load("/home/category"),
+            $('#catTech-post').load("/home/categoryTech")
+    </script>
+    <script>
+        $('.carousel').carousel(),
+            $('.carousel').carousel({
+                interval: 2000
+            })
     </script>
 }
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

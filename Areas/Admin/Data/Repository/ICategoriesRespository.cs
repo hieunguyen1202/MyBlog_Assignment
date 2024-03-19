@@ -7,12 +7,13 @@ namespace MyBlog.Areas.Admin.Data.Repository
 {
     public interface ICategoriesRespository
     {
+        int GetCountCategory();
         IQueryable<Category> GetCatList();
         void InsertCat(Category cat);
         void UpdateCat(int id, Category cat);
         void DeleteCat(int id);
         Category GetCateById(int? catId);
-        IEnumerable<Category> LoadCatgories();
+        List<Category> LoadCatgories();
 
     }
 }

@@ -5,13 +5,16 @@
     <!--reward blocks-->
     <a asp-action="Detail" asp-controller="Home" asp-route-id="@Model.Post.PostId">
         <div class="reward-block d-flex">
-            <div>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="90" height="90" />
-            </div>
-            <div class="ms-2">
-                <h5 class="text-truncate">@Model.Post.Title</h5>
-                <p class="">@Model.Post.Scontent</p>
-            </div>
+            @if(Model.Post.Published == true)
+            {
+                <div>
+                    <img title="@Model.Post.Title" src="@Model.Post.Thumb" alt="avatar" width="90" height="90" />
+                </div>
+                <div class="ms-2">
+                    <h6 >@Model.Post.Title</h6>
+                    <p class="text-truncate" style="max-width: 230px; font-size:15px">@Model.Post.Scontent</p>
+                </div>
+            }
         </div>
     </a>
 </div>

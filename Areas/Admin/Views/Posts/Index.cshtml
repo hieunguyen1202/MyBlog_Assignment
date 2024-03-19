@@ -34,75 +34,72 @@
 </div>
 <div class="clearfix"></div>
 <table class="table table-hover">
-    @{
-        if (ViewData["Result"] != null)
-        {
-            <div class="text-dark">@ViewData["Result"]</div>
-        }
-        else
-        {
-            <thead>
-                <tr>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Tiêu đề</a>
-                    </th>
-                    <th>
-                        nội dung
-                    </th>
-                    <th>Danh mục</th>
-                    <th>Công khai</th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Ngày đăng</a>                     
-                    </th>
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Tiêu đề</a>
+            </th>
+            <th>
+                Nội dung
+            </th>
+            <th>Danh mục</th>
+            <th>Công khai</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Ngày đăng</a>
+            </th>
 
-                    <th>Action</th>
-                </tr>
-            </thead>
-        }
-    }
-   
+            <th>Action</th>
+        </tr>
+    </thead>
+
+
     <tbody>
-   
-        @if (Model != null && Model.Count() > 0)
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.PostId</td>
-                    <td style="max-width: 200px;max-height:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Title</td>
-                    <td style="max-width: 500px;max-height:500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Contents</td>
-                    <td>@(item.Cat != null ? item.Cat.CatName : "")</td>
-                    @* <td><input type="checkbox" @(item.Published ? "checked" : "") disabled /></td> *@
-                    <td>
-                        @if (item.Published)
-                        {
-                            <span class="badge badge-primary">Public</span>
-                        }
-                        else
-                        {
-                            <span class="badge badge-danger">Non-Public</span>
-                        }
-                    </td>
-                    <td>@item.CreateTime</td>
-                    <td>
-                        <button class="btn btn-warning" title="View"><a style="color:white" href="View?postId=@item.PostId"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
-                        <button title="Edit" class="btn btn-primary">
-                            <a style="color:white" href="/Admin/Update/@item.PostId">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            </a>
-                        </button>
-                        <button title="Delete" class="btn btn-danger" onclick="deletePost(@item.PostId)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                </tr>
+        @if (ViewData["Result"] != null)
+            {<div class="clearfix"></div>
+                <div class="text-dark">@ViewData["Result"]</div>
             }
-        }
-       
-
+            else
+            {
+                @if (Model != null && Model.Count() > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.PostId</td>
+                            <td style="max-width: 200px;max-height:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Title</td>
+                            <td style="max-width: 500px;max-height:500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Contents</td>
+                            <td>@(item.Cat != null ? item.Cat.CatName : "")</td>
+                            @* <td><input type="checkbox" @(item.Published ? "checked" : "") disabled /></td> *@
+                            <td>
+                                @if (item.Published)
+                                {
+                                    <span class="badge badge-primary">Public</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Non-Public</span>
+                                }
+                            </td>
+                            <td>@item.CreateTime</td>
+                            <td>
+                                <button class="btn btn-warning" title="View"> <a asp-action="Detail" asp-controller="Home" asp-route-id="@item.PostId" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
+                                <button title="Edit" class="btn btn-primary">
+                                    <a style="color:white" href="/Admin/Update/@item.PostId">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                </button>
+                                <button title="Delete" class="btn btn-danger" onclick="deletePost(@item.PostId)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
     </tbody>
-    </table>
+
+</table>
 <br />
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -124,49 +121,49 @@
     Next
 </a>
 <script type="text/javascript">
-        function deletePost(postId) {
-            swal({
-                title: "Are you sure?",
-                text: "Are you sure that you want to delete this post?",
-                icon: "warning", // Changed 'type' to 'icon' for newer versions of sweetalert
-                buttons: {
-                    cancel: {
-                        text: "Cancel",
-                        value: null,
-                        visible: true,
-                        className: "",
-                        closeModal: true,
-                    },
-                    confirm: {
-                        text: "Yes, delete it",
-                        value: true,
-                        visible: true,
-                        className: "btn-danger",
-                        closeModal: false,
-                    }
+    function deletePost(postId) {
+        swal({
+            title: "Are you sure?",
+            text: "Are you sure that you want to delete this post?",
+            icon: "warning", // Changed 'type' to 'icon' for newer versions of sweetalert
+            buttons: {
+                cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
                 },
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "/Admin/Delete",
-                        data: { id: postId },
-                        type: "POST"
-                    })
-                        .done(function (data) {
-                            swal("Deleted!", "Your post was successfully deleted!", "success")
-                                .then(() => {
-                                    window.location.reload(); // Optional: Refresh the page after deleting the post
-                                });
-                        })
-                        .fail(function (error) {
-                            swal("Oops!", "An error occurred while deleting the post: " + error.responseText, "error");
-                        });
-                } else {
-                    swal("Cancelled", "Your post is safe", "info");
+                confirm: {
+                    text: "Yes, delete it",
+                    value: true,
+                    visible: true,
+                    className: "btn-danger",
+                    closeModal: false,
                 }
-            });
-        }
-    </script>
-</table>
+            },
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: "/Admin/Delete",
+                    data: { id: postId },
+                    type: "POST"
+                })
+                    .done(function (data) {
+                        swal("Deleted!", "Your post was successfully deleted!", "success")
+                            .then(() => {
+                                window.location.reload(); // Optional: Refresh the page after deleting the post
+                            });
+                    })
+                    .fail(function (error) {
+                        swal("Oops!", "An error occurred while deleting the post: " + error.responseText, "error");
+                    });
+            } else {
+                swal("Cancelled", "Your post is safe", "info");
+            }
+        });
+    }
+</script>
+                 
 
 

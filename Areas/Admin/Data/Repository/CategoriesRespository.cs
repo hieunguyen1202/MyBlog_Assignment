@@ -59,9 +59,15 @@ namespace MyBlog.Areas.Admin.Data.Repository
             }
         }
 
-        public IEnumerable<Category> LoadCatgories()
+        public List<Category> LoadCatgories()
         {
-            return _context.Categories;
+            return _context.Categories.ToList();
+        }
+
+        public int GetCountCategory()
+        {
+            var count = _context.Categories.Count();
+            return count;
         }
     }
 }

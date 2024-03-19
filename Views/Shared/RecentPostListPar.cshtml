@@ -8,27 +8,29 @@
             {
                 foreach (var post in Model)
                 {
-                    <li>
-                        <div class="media d-flex" style="display: flex">
-                            <div class="media-body">
+                    if (post.Published == true)
+                    {
+                        <li>
+                            <div class="media d-flex item">
                                 <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="media-left">
                                     <img alt="thumb" title="@post.Title" src="@post.Thumb">
                                 </a>
+                                <div class="media-body ms-2 ">
+                                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="catg_title m-0">
+                                        <h6 class="text-truncate" style="max-width: 260px; font-size:15px"><span>@post.Title</span></h6>
+                                    </a>
+                                    <p class="text-truncate" style="max-width: 260px; font-size:15px">@post.Scontent</p>
+                                </div>
                             </div>
-                            <div class="media-body ms-2" style="margin-left:2px">
-                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@post.PostId" class="catg_title m-0">
-                                    <h6 class="m-0"><span>@post.Title</span></h6>
-                                </a>
-                                <p class="text-truncate" style="max-width: 260px;font-size: 15px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">@post.Scontent</p>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    }
                 }
             }
         </ul>
     </div>
 </div>
 <style>
+
     .latest_post_container {
         display: inline;
         float: left;

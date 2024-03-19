@@ -21,11 +21,12 @@ using Minio.DataModel;
 using System.Security.Cryptography;
 using MyBlog.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using static System.Net.WebRequestMethods;
 namespace MyBlog
 {
     public class Startup
     {
-		private readonly IMinioClient minioClient;
+		private readonly MinioClient minioClient;
 		public Startup(IConfiguration configuration)
         {			
 			Configuration = configuration;
@@ -44,19 +45,16 @@ namespace MyBlog
 		public void ConfigureServices(IServiceCollection services)
         {
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
-			services.AddSingleton<IMinioClient>(sp =>
-			{
-				var endpoint = "http://14.160.26.45:9080";
-				var accesskey = "p7vAskzx2aQfdE1YAPvy";
-				var secretKey = "FIZMZqfyVRHogz8TSVe4dUd1Ij8C9aCUTVzQsQiU";
-
-				return new MinioClient()
-					.WithEndpoint(endpoint)
-					.WithCredentials(accesskey, secretKey)
-					.WithSSL()
-					.Build();
-			});
-			var stringConnectdb = Configuration.GetConnectionString("MyBlogDB");
+            var host = "http://14.160.26.45";
+            var accessKey = "kztek";
+            var secretKey = "Kztek123456";
+            var minio = new MinioClient()
+            .WithEndpoint($"192.168.21.135:29080")
+            .WithCredentials(accessKey, secretKey)
+            .WithRegion("us-west-rack")
+            .WithSSL(false).Build();
+            services.AddSingleton(minio);
+            var stringConnectdb = Configuration.GetConnectionString("MyBlogDB");
             services.AddDbContext<MyBlogContext>(options => options.UseSqlServer(stringConnectdb), ServiceLifetime.Scoped);
             services.AddScoped<MyBlogContext>();
             services.AddControllersWithViews();
